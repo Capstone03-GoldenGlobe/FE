@@ -40,7 +40,7 @@ export const Input = styled.input`
   &::placeholder {
     color: #afafaf;
     font-family: Pretendard;
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -59,7 +59,7 @@ export const Btn = styled.button`
   color: #000;
   text-align: center;
   font-family: Pretendard;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-style: normal;
   font-weight: 500;
   line-height: normal;

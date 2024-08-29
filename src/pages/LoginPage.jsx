@@ -16,7 +16,13 @@ const LoginPage = () => {
   const goSignup = () => {
     navigate("/signup1");
   };
+  const goFindEmail = () => {
+    navigate("/findemail");
+  };
 
+  const goFindPw = () => {
+    navigate("/findpw");
+  };
   const onEmailChange = (e) => {
     setEmail(e.target.value);
     ButtonValid();
@@ -54,8 +60,8 @@ const LoginPage = () => {
 
         <S.Btn isValid={isValid}>로그인</S.Btn>
         <S.OptionWrapper>
-          <S.Option>아이디(이메일) 찾기 | </S.Option>
-          <S.Option> 비밀번호 찾기 | </S.Option>
+          <S.Option onClick={goFindEmail}>아이디(이메일) 찾기 | </S.Option>
+          <S.Option onClick={goFindPw}> 비밀번호 찾기 | </S.Option>
           <S.Option onClick={goSignup}>회원가입</S.Option>
         </S.OptionWrapper>
 

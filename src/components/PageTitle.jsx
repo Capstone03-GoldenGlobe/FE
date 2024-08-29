@@ -13,8 +13,8 @@ export default PageTitle;
 const Title = styled.div`
   color: #000;
   text-align: center;
-  font-family: Pretendard;
-  font-size: 3.2rem;
+  font-family: var(--korean);
+  font-size: 3rem;
   font-style: normal;
   font-weight: 700;
   line-height: normal;

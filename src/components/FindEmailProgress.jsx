@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import arrow from "../assets/signinArrow.svg";
 
-const SignupProgress = ({ step }) => {
+const FindEmailProgress = ({ step }) => {
   return (
     <>
       <Wrapper>
@@ -25,30 +25,14 @@ const SignupProgress = ({ step }) => {
           <>
             <Step1Wrp>
               <Num>{step}</Num>
-              <Text>이메일 확인</Text>
+              <Text>아이디 확인</Text>
             </Step1Wrp>
           </>
         ) : (
           <>
             <Step1Wrp2>
               <Num2>2</Num2>
-              <Text2>이메일 확인</Text2>
-            </Step1Wrp2>
-          </>
-        )}
-        <img src={arrow} style={{ marginRight: "2.15rem" }} />
-        {step === 3 ? (
-          <>
-            <Step1Wrp>
-              <Num>{step}</Num>
-              <Text>회원정보 입력</Text>
-            </Step1Wrp>
-          </>
-        ) : (
-          <>
-            <Step1Wrp2>
-              <Num2>3</Num2>
-              <Text2>회원정보 입력</Text2>
+              <Text2>아이디 확인</Text2>
             </Step1Wrp2>
           </>
         )}
@@ -57,7 +41,7 @@ const SignupProgress = ({ step }) => {
   );
 };
 
-export default SignupProgress;
+export default FindEmailProgress;
 
 const Wrapper = styled.div`
   display: flex;
