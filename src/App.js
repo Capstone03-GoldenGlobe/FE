@@ -6,12 +6,17 @@ import Signup3Page from "./pages/Signup3Page";
 import FindEmailPage from "./pages/FindEmailPage";
 import FindEmail2Page from "./pages/FindEmail2Page";
 import FindPwPage from "./pages/FindPwPage";
+import MainPage from "./pages/MainPage";
+import Mypage from "./pages/Mypage";
+import ChatBotPage from "./pages/ChatBotPage";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
+          {/* 메인 페이지 */}
+          <Route exact path="/" element={<MainPage />} />
           {/* 로그인 페이지 */}
           <Route exact path="/login" element={<LoginPage />} />
 
@@ -32,6 +37,11 @@ function App() {
 
           {/* 이메일 찾기21 페이지 */}
           <Route exact path="/findpw" element={<FindPwPage />} />
+
+          {/* 마이페이지 */}
+          <Route exact path="/mypage" element={<Mypage />} />
+          {/* 마이페이지 */}
+          <Route exact path="/chat" element={<ChatBotPage />} />
         </Routes>
       </BrowserRouter>
     </>

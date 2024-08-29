@@ -11,7 +11,7 @@ const Signup2Page = () => {
     navigate("/signup3");
   };
   const goBack = () => {
-    navigate(-1);
+    navigate("/signup1");
   };
   return (
     <>
