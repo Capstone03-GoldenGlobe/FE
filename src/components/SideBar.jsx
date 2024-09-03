@@ -124,7 +124,7 @@ const Line = styled.div`
   width: 13.05rem;
   height: 0.1rem;
   background: #fff;
-  margin-top: 7rem;
+  margin-top: 30%;
 `;
 const Sub = styled.div`
   margin-top: 1.95rem;

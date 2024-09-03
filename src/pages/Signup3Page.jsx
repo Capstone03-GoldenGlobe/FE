@@ -38,9 +38,10 @@ const Signup3Page = () => {
             <S.Title>아이디</S.Title>
             <div style={{ marginRight: "2rem" }} />
             <InputBox
+              readOnly={true}
               type="text"
               width="22.25rem"
-              placeholder={"aaa@naver.com"}
+              value={"slkdjf"}
             />
             <img src={info} />
           </S.InputWrp>

@@ -9,6 +9,7 @@ import FindPwPage from "./pages/FindPwPage";
 import MainPage from "./pages/MainPage";
 import Mypage from "./pages/Mypage";
 import ChatBotPage from "./pages/ChatBotPage";
+import CheckListPage from "./pages/CheckListPage";
 
 function App() {
   return (
@@ -40,8 +41,10 @@ function App() {
 
           {/* 마이페이지 */}
           <Route exact path="/mypage" element={<Mypage />} />
-          {/* 마이페이지 */}
+          {/* 챗봇 페이지 */}
           <Route exact path="/chat" element={<ChatBotPage />} />
+          {/* 체크리스트 페이지 */}
+          <Route exact path="/list" element={<CheckListPage />} />
         </Routes>
       </BrowserRouter>
     </>

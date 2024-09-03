@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const InputBox = ({ type, placeholder, width, value, onChange }) => {
+const InputBox = ({ type, placeholder, width, value, onChange, readOnly }) => {
   return (
     <Input
       type={type}
@@ -8,6 +8,7 @@ const InputBox = ({ type, placeholder, width, value, onChange }) => {
       value={value}
       width={width}
       onChange={onChange}
+      readOnly={readOnly}
     />
   );
 };
@@ -23,11 +24,13 @@ const Input = styled.input`
   box-sizing: border-box;
   padding: 1rem 1rem;
   color: #000;
-  font-family: Pretendard;
+  font-family: var(--korean);
   font-size: 1.4rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  outline: none;
+  /* background-color props로 넣기*/
 
   &::placeholder {
     color: #afafaf;
