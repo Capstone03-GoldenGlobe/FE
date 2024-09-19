@@ -2,12 +2,18 @@ import styled from "styled-components";
 import pdf from "../assets/pdf.svg";
 import trash from "../assets/trash.svg";
 import plus from "../assets/plus.svg";
+import { useNavigate } from "react-router-dom";
 
 const ChatSideBar = () => {
+  const navigate = useNavigate();
+
+  const goMain = () => {
+    navigate("/");
+  };
   return (
     <>
       <Wrapper>
-        <Title>GoldenGlobe</Title>
+        <Title onClick={goMain}>GoldenGlobe</Title>
         <Country>🇹🇭 태국</Country>
 
         <PdfBox>
@@ -62,6 +68,7 @@ const Title = styled.div`
   line-height: normal;
 
   margin-top: 2.5rem;
+  cursor: pointer;
 `;
 
 const Country = styled.div`
