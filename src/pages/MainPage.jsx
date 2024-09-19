@@ -2,9 +2,16 @@ import { useState } from "react";
 import Button from "../components/Botton";
 import SideBar from "../components/SideBar";
 import * as S from "./MainPage.style";
+import { useNavigate } from "react-router-dom";
 
 const MainPage = () => {
   const [contents, setContents] = useState(true);
+
+  const navigate = useNavigate();
+
+  const goChat = () => {
+    navigate("/chat");
+  };
   return (
     <>
       <SideBar />
@@ -14,7 +21,7 @@ const MainPage = () => {
             <S.CTitle>여행 모아보기</S.CTitle>
 
             <S.Container>
-              <S.Content>
+              <S.Content onClick={goChat}>
                 <S.FlagText>
                   <S.Flag>🇹🇭</S.Flag>
                   <S.CountryWrapper>
