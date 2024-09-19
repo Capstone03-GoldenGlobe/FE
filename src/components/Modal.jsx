@@ -1,64 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { ShortButton } from "./ShortButton";
-import ButtonType from "./ButtonType";
-
-// 모달 배경 스타일
-const ModalBackground = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1001;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-`;
-
-// 모달 컨테이너 스타일
-const ModalContainer = styled.div`
-  width: 68vw;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-`;
-
-// 컨텐츠 래퍼 스타일
-const ContentWrapper = styled.div`
-  padding: 30px 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center; // 텍스트 자체를 가운데 정렬
-  width: 100%;
-`;
-
-// 안내 문구 텍스트 스타일
-const GuideText = styled.div`
-  font-size: 14px;
-  font-weight: 600;
-
-  margin-bottom: ${(props) => (props.showTextInput ? "12px" : "28px")};
-`;
-
-// 버튼 컨테이너 스타일
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: ${(props) => (props.isSingleButton ? "0" : "12px")};
-`;
-
-const StyledInput = styled.input`
-  width: 46vw;
-  height: 130px;
-  margin-bottom: 12px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-sizing: border-box;
-`;
+import Button from "./Botton";
 
 // Modal 컴포넌트
 const Modal = ({
@@ -81,25 +23,22 @@ const Modal = ({
         <ContentWrapper>
           <GuideText showTextInput={showTextInput}>{guideText}</GuideText>
           {showTextInput && (
-            <StyledInput
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-            />
+            <>
+              <InputWrp>
+                <Text>아이디</Text>
+                <StyledInput
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                />
+              </InputWrp>
+            </>
           )}
 
           <ButtonContainer isSingleButton={isSingleButton}>
-            <ShortButton
-              type={ButtonType.GREEN}
-              onClick={() => onConfirm(inputValue)}
-            >
+            <Button type={"L"} onClick={() => onConfirm(inputValue)}>
               {confirmText}
-            </ShortButton>
-            {!isSingleButton && (
-              <ShortButton type={ButtonType.SHORT_GREY} onClick={onCancel}>
-                {cancelText}
-              </ShortButton>
-            )}
+            </Button>
           </ButtonContainer>
         </ContentWrapper>
       </ModalContainer>
@@ -108,3 +47,96 @@ const Modal = ({
 };
 
 export default Modal;
+// 모달 배경 스타일
+const ModalBackground = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1001;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+`;
+
+// 모달 컨테이너 스타일
+const ModalContainer = styled.div`
+  width: 26.55rem;
+  height: 22rem;
+  flex-shrink: 0;
+  margin-left: 16rem;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+`;
+
+// 컨텐츠 래퍼 스타일
+const ContentWrapper = styled.div`
+  padding-top: 3.15rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center; // 텍스트 자체를 가운데 정렬
+  width: 100%;
+`;
+
+// 안내 문구 텍스트 스타일
+const GuideText = styled.div`
+  color: #000;
+  text-align: center;
+  font-family: var(--korean);
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  margin-bottom: ${(props) => (props.showTextInput ? "3rem" : "24px")};
+`;
+
+// 버튼 컨테이너 스타일
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: ${(props) => (props.isSingleButton ? "0" : "12px")};
+`;
+
+const InputWrp = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 3.45rem;
+`;
+
+const StyledInput = styled.input`
+  width: 17rem;
+  color: #000;
+
+  font-family: var(--korean);
+  font-size: 1.2rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-bottom: 12px;
+
+  border: none;
+  border-bottom: 1px solid #ccc;
+  outline: none;
+  box-sizing: border-box;
+`;
+
+const Text = styled.p`
+  color: #000;
+  text-align: center;
+  font-family: var(--korean);
+  font-size: 1.45rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-right: 1.3rem;
+`;
