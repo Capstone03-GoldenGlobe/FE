@@ -14,7 +14,7 @@ const SideBar = () => {
     navigate("/");
   };
   const goCheck = () => {
-    navigate("/");
+    navigate("/list");
   };
   const goBot = () => {
     navigate("/chat");
