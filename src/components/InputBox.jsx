@@ -31,10 +31,12 @@ const Input = styled.input`
   line-height: normal;
   outline: none;
   /* background-color props로 넣기*/
-
+  display: flex;
+  align-items: center;
+  justify-content: center;
   &::placeholder {
     color: #afafaf;
-    font-family: Pretendard;
+    font-family: var(--korean);
     font-size: 1.4rem;
     font-style: normal;
     font-weight: 400;

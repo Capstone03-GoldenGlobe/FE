@@ -10,6 +10,7 @@ import MainPage from "./pages/MainPage";
 import Mypage from "./pages/Mypage";
 import ChatBotPage from "./pages/ChatBotPage";
 import CheckListPage from "./pages/CheckListPage";
+import AddNewTrip from "./components/AddNewTrip";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Routes>
           {/* 메인 페이지 */}
           <Route exact path="/" element={<MainPage />} />
+
           {/* 로그인 페이지 */}
           <Route exact path="/login" element={<LoginPage />} />
 
