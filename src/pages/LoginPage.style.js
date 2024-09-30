@@ -31,15 +31,16 @@ export const Input = styled.input`
   box-sizing: border-box;
   padding: 1.1rem 1.1rem;
   color: black;
-  font-family: Pretendard;
+  font-family: var(--korean);
   font-size: 1.6rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  outline: none;
 
   &::placeholder {
     color: #afafaf;
-    font-family: Pretendard;
+    font-family: var(--korean);
     font-size: 1.4rem;
     font-style: normal;
     font-weight: 400;
