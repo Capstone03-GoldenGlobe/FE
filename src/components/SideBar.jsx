@@ -4,7 +4,7 @@ import mypage from "../assets/mypage.svg";
 import logout from "../assets/logout.svg";
 import { useNavigate } from "react-router-dom";
 
-const SideBar = () => {
+const SideBar = ({ data }) => {
   const navigate = useNavigate();
 
   const goMain = () => {
@@ -34,7 +34,7 @@ const SideBar = () => {
           />
           <Text>
             안녕하세요
-            <br /> 근주님!
+            <br /> {data}님!
           </Text>
         </Profile>
         <Index onClick={goMain}>여행 모아보기</Index>
