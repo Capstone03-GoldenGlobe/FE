@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
 `;
 export const BtnWrapper = styled.div`
   display: flex;
-  margin-top: 3rem;
+  margin-top: 1.5rem;
 `;
 export const InputWrp2 = styled.div`
   display: flex;

@@ -20,7 +20,7 @@ const SignupProgress = ({ step }) => {
             </Step1Wrp2>
           </>
         )}
-        <img src={arrow} style={{ marginRight: "2.15rem" }} />
+        {/* <img src={arrow} style={{ marginRight: "2.15rem" }} />
         {step === 2 ? (
           <>
             <Step1Wrp>
@@ -35,9 +35,9 @@ const SignupProgress = ({ step }) => {
               <Text2>이메일 확인</Text2>
             </Step1Wrp2>
           </>
-        )}
+        )} */}
         <img src={arrow} style={{ marginRight: "2.15rem" }} />
-        {step === 3 ? (
+        {step === 2 ? (
           <>
             <Step1Wrp>
               <Num>{step}</Num>
@@ -47,7 +47,7 @@ const SignupProgress = ({ step }) => {
         ) : (
           <>
             <Step1Wrp2>
-              <Num2>3</Num2>
+              <Num2>2</Num2>
               <Text2>회원정보 입력</Text2>
             </Step1Wrp2>
           </>
