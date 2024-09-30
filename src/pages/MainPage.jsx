@@ -1,51 +1,73 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../components/Botton";
 import SideBar from "../components/SideBar";
 import * as S from "./MainPage.style";
 import { useNavigate } from "react-router-dom";
+import AddNewTrip from "../components/AddNewTrip";
+import { mainPage } from "../api/main";
+import AddNewModal from "../components/AddNewModal";
 
 const MainPage = () => {
-  const [contents, setContents] = useState(true);
+  const [contents, setContents] = useState(false);
+  const [isShared, setIsShared] = useState(false);
+  const [data, setData] = useState();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const getData = async () => {
+      const res = await mainPage();
+      console.log("메인", res);
+      setData(res);
+
+      if (res) {
+        setContents(true);
+      }
+    };
+
+    getData();
+  }, []);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const goChat = () => {
     navigate("/chat");
   };
+
+  const onClickAddNew = () => {
+    setIsModalOpen(true);
+  };
   return (
     <>
-      <SideBar />
+      <SideBar data={data?.nickname} />
       {contents ? (
         <>
           <S.ContentsWrapper>
             <S.CTitle>여행 모아보기</S.CTitle>
 
             <S.Container>
-              <S.Content onClick={goChat}>
-                <S.FlagText>
-                  <S.Flag>🇹🇭</S.Flag>
-                  <S.CountryWrapper>
-                    <S.Country>태국</S.Country>
-                    <S.City>치앙마이</S.City>
-                  </S.CountryWrapper>
-                </S.FlagText>
+              {data?.travelLists.map((item) => (
+                <S.Content onClick={goChat} key={item.destId}>
+                  <S.FlagText>
+                    <S.Flag>🇹🇭</S.Flag>
+                    <S.CountryWrapper>
+                      <S.Country>{item?.country}</S.Country>
+                      <S.City>{item?.city}</S.City>
+                    </S.CountryWrapper>
+                  </S.FlagText>
 
-                <S.Date>2024.09.10 - 09.15</S.Date>
-              </S.Content>
-
-              {/* ///////////////// */}
-
-              <S.Content>
-                <S.FlagText>
-                  <S.Flag>🇹🇭</S.Flag>
-                  <S.CountryWrapper>
-                    <S.Country>태국</S.Country>
-                    <S.City>치앙마이</S.City>
-                  </S.CountryWrapper>
-                </S.FlagText>
-
-                <S.Date>2024.09.10 - 09.15</S.Date>
-              </S.Content>
+                  <S.Date>
+                    {item.startDate}-{item.endDate}
+                  </S.Date>
+                </S.Content>
+              ))}
 
               {/* ///////////////// */}
 
@@ -60,76 +82,38 @@ const MainPage = () => {
 
                 <S.Date>2024.09.10 - 09.15</S.Date>
               </S.Content>
-              {/* ///////////////////// */}
 
-              <S.Content>
-                <S.FlagText>
-                  <S.Flag>🇹🇭</S.Flag>
-                  <S.CountryWrapper>
-                    <S.Country>태국</S.Country>
-                    <S.City>치앙마이</S.City>
-                  </S.CountryWrapper>
-                </S.FlagText>
-
-                <S.Date>2024.09.10 - 09.15</S.Date>
-              </S.Content>
-              {/* ///////////////////////////// */}
-
-              <S.Content>
-                <S.FlagText>
-                  <S.Flag>🇹🇭</S.Flag>
-                  <S.CountryWrapper>
-                    <S.Country>태국</S.Country>
-                    <S.City>치앙마이</S.City>
-                  </S.CountryWrapper>
-                </S.FlagText>
-
-                <S.Date>2024.09.10 - 09.15</S.Date>
-              </S.Content>
-
-              {/* ///////////////////////// */}
-
-              <S.Content>
-                <S.FlagText>
-                  <S.Flag>🇹🇭</S.Flag>
-                  <S.CountryWrapper>
-                    <S.Country>태국</S.Country>
-                    <S.City>치앙마이</S.City>
-                  </S.CountryWrapper>
-                </S.FlagText>
-
-                <S.Date>2024.09.10 - 09.15</S.Date>
-              </S.Content>
-
-              {/* ///////////////////////// */}
-
-              <S.ContentEnd>
+              <S.ContentEnd onClick={onClickAddNew}>
                 <S.Add>
                   새로운 여행을 <br />
                   추가하세요!
                 </S.Add>
+                <AddNewModal isOpen={isModalOpen} onClose={closeModal}>
+                  <AddNewTrip />
+                </AddNewModal>
               </S.ContentEnd>
             </S.Container>
+            <S.Line />
+            {data?.shared.map((item) => (
+              <S.Content onClick={goChat} key={item.destId}>
+                <S.FlagText>
+                  <S.Flag>🇹🇭</S.Flag>
+                  <S.CountryWrapper>
+                    <S.Country>{item?.country}</S.Country>
+                    <S.City>{item?.city}</S.City>
+                  </S.CountryWrapper>
+                </S.FlagText>
+
+                <S.Date>
+                  {item.startDate}-{item.endDate}
+                </S.Date>
+              </S.Content>
+            ))}
           </S.ContentsWrapper>
         </>
       ) : (
         <>
-          <S.Wrapper>
-            <S.Title>새로운 여행을 추가해 보세요!</S.Title>
-            <S.Box>
-              <S.SmallTitle>여행 국가</S.SmallTitle>
-              <S.Input placeholder="여행국가를 입력해주세요." />
-
-              <S.SmallTitle>도시</S.SmallTitle>
-              <S.Input placeholder="도시를 입력해주세요." />
-
-              <S.SmallTitle>여행 일정</S.SmallTitle>
-              <S.Input placeholder="여행 일정을 입력해주세요." />
-              <S.BtnWrapper>
-                <Button children={"생성하기"} type="L" />
-              </S.BtnWrapper>
-            </S.Box>
-          </S.Wrapper>
+          <AddNewTrip />
         </>
       )}
     </>

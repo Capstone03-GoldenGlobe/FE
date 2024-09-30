@@ -187,3 +187,11 @@ export const ContentEnd = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+export const Line = styled.div`
+  width: 39rem;
+  height: 0.05rem;
+  background: #d9d9d9;
+  margin-bottom: 1rem;
+  margin-left: 35rem;
+`;
