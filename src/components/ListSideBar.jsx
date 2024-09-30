@@ -9,7 +9,7 @@ import Modal from "./Modal";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const ListSideBar = () => {
+const ListSideBar = ({ data }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onClickPlus = () => {
@@ -21,6 +21,7 @@ const ListSideBar = () => {
   const goMain = () => {
     navigate("/");
   };
+
   return (
     <>
       <Wrapper>
@@ -46,16 +47,9 @@ const ListSideBar = () => {
           />
         </UserWrp>
 
-        <Index>필수</Index>
-        <Index>
-          미국에 챙겨가면
-          <br /> 좋을 것
-        </Index>
-        <Index>세면 도구</Index>
-        <Index>옷</Index>
-        <Index>
-          PDF 분석기반 <br /> 준비물
-        </Index>
+        {data.map((item) => (
+          <Index>{item?.groupName}</Index>
+        ))}
 
         <img
           src={plus}
@@ -104,6 +98,7 @@ const Title = styled.div`
   line-height: normal;
 
   margin-top: 2.5rem;
+  cursor: pointer;
 `;
 
 const Country = styled.div`

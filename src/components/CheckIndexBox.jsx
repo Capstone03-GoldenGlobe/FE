@@ -2,11 +2,12 @@ import Checkbox from "./Checkbox";
 import styled from "styled-components";
 import memo from "../assets/memo.svg";
 import checkPlus from "../assets/checkPlus.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const CheckIndexBox = () => {
+const CheckIndexBox = ({ data }) => {
   const [checkboxes, setCheckboxes] = useState([]);
   const [memoInput, setMemoInput] = useState([]);
+  const [memeContent, setMemoContent] = useState("");
 
   // checkPlus 버튼 클릭 시 체크박스를 추가하는 함수
   const addCheckbox = () => {
@@ -30,11 +31,33 @@ const CheckIndexBox = () => {
     );
   };
 
+  useEffect(() => {
+    data?.items.map((item) => (
+      <Checkbox key={item.itemId} color={"#85B6FF"} value={item.itemName} />
+    ));
+  }, [data]);
+
+  // 페이지가 로드될 때 API로 받아온 데이터를 상태에 저장하여 메모 표시
+  useEffect(() => {
+    if (data?.memo) {
+      setMemoInput([{ isSmall: false, content: data.memo }]);
+    }
+  }, [data]);
+
+  console.log("props 확인", data);
   return (
     <>
       <ListBox>
         <div>
-          <Checks>{checkboxes}</Checks>
+          <Checks>
+            {data?.items.map((item) => (
+              <Checkbox
+                key={item.itemId}
+                color={"#85B6FF"}
+                value={item.itemName}
+              />
+            ))}
+          </Checks>
           {memoInput ? (
             <Memos>
               {memoInput.map((memo, index) =>
@@ -45,7 +68,7 @@ const CheckIndexBox = () => {
                   />
                 ) : (
                   <MemoWrp key={index}>
-                    <Memo />
+                    <Memo value={data?.memo} />
                     <Text onClick={() => toggleMemoSize(index)}>접기</Text>
                   </MemoWrp>
                 )

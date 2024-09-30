@@ -2,9 +2,13 @@ import { useNavigate } from "react-router-dom";
 import ListSideBar from "../components/ListSideBar";
 import * as S from "./CheckListPage.style";
 import CheckIndexBox from "../components/CheckIndexBox";
+import { getCheckListAll } from "../api/checkList";
+import { useEffect, useState } from "react";
 
 const CheckListPage = () => {
   const navigate = useNavigate();
+
+  const [data, setData] = useState([]);
 
   const goChatBot = () => {
     navigate("/chat");
@@ -14,10 +18,22 @@ const CheckListPage = () => {
     navigate("/list");
   };
 
+  useEffect(() => {
+    const getData = async () => {
+      const res = await getCheckListAll();
+      console.log(res);
+      setData(res?.data.groups);
+    };
+
+    getData();
+  }, []);
+
+  console.log("res.data.groups", data);
+
   return (
     <>
       <div style={{ backgroundColor: "#f5f5f5" }}>
-        <ListSideBar />
+        <ListSideBar data={data} />
         <S.Container>
           <S.IndexContainer>
             <S.IndexGray onClick={goChatBot}>챗봇</S.IndexGray>
@@ -25,12 +41,9 @@ const CheckListPage = () => {
           </S.IndexContainer>
 
           <S.Weather>🇺🇸 미국 샌프란시스코의 현재 기온: 32℃</S.Weather>
-
-          <CheckIndexBox />
-          <CheckIndexBox />
-          <CheckIndexBox />
-          <CheckIndexBox />
-          <CheckIndexBox />
+          {data.map((list) => (
+            <CheckIndexBox data={list} />
+          ))}
         </S.Container>
       </div>
     </>
