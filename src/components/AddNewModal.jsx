@@ -1,4 +1,4 @@
-// Modal.js
+import React from "react";
 import styled from "styled-components";
 
 const AddNewModal = ({ children, isOpen, onClose }) => {
@@ -8,7 +8,7 @@ const AddNewModal = ({ children, isOpen, onClose }) => {
     <Backdrop onClick={onClose}>
       <ModalContent onClick={(e) => e.stopPropagation()}>
         <CloseButton onClick={onClose}>&times;</CloseButton>
-        {children}
+        {React.cloneElement(children, { onClose })}
       </ModalContent>
     </Backdrop>
   );

@@ -50,7 +50,8 @@ const LoginPage = () => {
     try {
       const res = await Signin(cellphone, password);
       console.log(res);
-      navigate("/");
+      localStorage.setItem("userId", res.data.userId);
+
       if (res.status == 200) {
         navigate("/");
       }

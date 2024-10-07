@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ChatSideBar from "../components/ChatSideBar";
 import * as S from "./ChatBotPage.style";
 import sendArrow from "../assets/sendArrow.svg";
@@ -14,10 +14,6 @@ const ChatBotPage = () => {
 
   const navigate = useNavigate();
 
-  const goChatBot = () => {
-    navigate("/chat");
-  };
-
   const goCheckList = () => {
     navigate("/list");
     setIsList(true);
@@ -28,9 +24,7 @@ const ChatBotPage = () => {
       <ChatSideBar />
       <S.Container>
         <S.IndexContainer>
-          <S.Index onClick={goChatBot} isChat={isChat}>
-            챗봇
-          </S.Index>
+          <S.Index isChat={isChat}>챗봇</S.Index>
           <S.IndexGray onClick={goCheckList} isList={isList}>
             체크리스트
           </S.IndexGray>

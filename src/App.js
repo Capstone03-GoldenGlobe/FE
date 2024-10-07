@@ -44,9 +44,9 @@ function App() {
           {/* 마이페이지 */}
           <Route exact path="/mypage" element={<Mypage />} />
           {/* 챗봇 페이지 */}
-          <Route exact path="/chat" element={<ChatBotPage />} />
+          <Route exact path="/chat/:id" element={<ChatBotPage />} />
           {/* 체크리스트 페이지 */}
-          <Route exact path="/list" element={<CheckListPage />} />
+          <Route exact path="/list/:id" element={<CheckListPage />} />
         </Routes>
       </BrowserRouter>
     </>

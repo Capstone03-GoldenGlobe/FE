@@ -1,25 +1,78 @@
 import styled from "styled-components";
 import Button from "./Botton";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { AddNew } from "../api/addNew";
 
-const AddNewTrip = () => {
+const AddNewTrip = ({ onClose }) => {
   const navigate = useNavigate();
+  const [country, setCountry] = useState("");
+  const [city, setCity] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
-  const onClickAddTrip = () => {
-    navigate("/");
+  const onClickAddTrip = async () => {
+    try {
+      const res = await AddNew(country, city, startDate, endDate);
+      console.log(res);
+      // 요청 완료 후 모달 닫기
+      onClose();
+
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+      alert(err);
+    }
   };
+
+  const onChangeCountry = (e) => {
+    setCountry(e.target.value);
+  };
+
+  const onChangeCity = (e) => {
+    setCity(e.target.value);
+  };
+
+  const onChangeStartDate = (e) => {
+    setStartDate(e.target.value);
+  };
+  const onChangeEndDate = (e) => {
+    setEndDate(e.target.value);
+  };
+
   return (
     <Wrapper>
       <Title>새로운 여행을 추가해 보세요!</Title>
       <Box>
         <SmallTitle>여행 국가</SmallTitle>
-        <Input placeholder="여행국가를 입력해주세요." />
+        <Input
+          placeholder="여행국가를 입력해주세요."
+          value={country}
+          onChange={onChangeCountry}
+        />
 
         <SmallTitle>도시</SmallTitle>
-        <Input placeholder="도시를 입력해주세요." />
+        <Input
+          placeholder="도시를 입력해주세요."
+          value={city}
+          onChange={onChangeCity}
+        />
 
         <SmallTitle>여행 일정</SmallTitle>
-        <Input placeholder="여행 일정을 입력해주세요." />
+        <DateWrp>
+          <SmallInput
+            placeholder="2024.12.25"
+            value={startDate}
+            onChange={onChangeStartDate}
+          />
+          ~
+          <SmallInput
+            placeholder="2024.12.30"
+            value={endDate}
+            onChange={onChangeEndDate}
+          />
+        </DateWrp>
+
         <BtnWrapper>
           <Button children={"생성하기"} type="L" onClick={onClickAddTrip} />
         </BtnWrapper>
@@ -110,11 +163,40 @@ export const Input = styled.input`
   outline: none;
 `;
 
+export const SmallInput = styled.input`
+  width: 11.1rem;
+  height: 3.45rem;
+  flex-shrink: 0;
+  border: none;
+  background: #fff;
+  padding: 0.75rem 0.9rem;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+
+  box-sizing: border-box;
+  color: #000;
+  font-family: var(--korean);
+  font-size: 1.4rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  & ::placeholder {
+    color: var(--gray1);
+    font-family: var(--korean);
+    font-size: 1.4rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  outline: none;
+`;
 export const BtnWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 1.8rem;
 `;
 
 export const Content = styled.div`
@@ -142,4 +224,12 @@ export const Container = styled.div`
   display: flex;
   display: flex;
   flex-wrap: wrap;
+`;
+
+const DateWrp = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
 `;

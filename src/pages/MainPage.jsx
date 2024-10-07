@@ -27,7 +27,7 @@ const MainPage = () => {
     };
 
     getData();
-  }, []);
+  }, [data]);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -37,8 +37,8 @@ const MainPage = () => {
     setIsModalOpen(false);
   };
 
-  const goChat = () => {
-    navigate("/chat");
+  const goChat = (id) => {
+    navigate(`/chat/${id}`);
   };
 
   const onClickAddNew = () => {
@@ -50,11 +50,14 @@ const MainPage = () => {
       {contents ? (
         <>
           <S.ContentsWrapper>
-            <S.CTitle>여행 모아보기</S.CTitle>
+            <S.CTitle>내 여행 모아보기</S.CTitle>
 
             <S.Container>
               {data?.travelLists.map((item) => (
-                <S.Content onClick={goChat} key={item.destId}>
+                <S.Content
+                  onClick={() => goChat(item.destId)}
+                  key={item.destId}
+                >
                   <S.FlagText>
                     <S.Flag>🇹🇭</S.Flag>
                     <S.CountryWrapper>
@@ -94,6 +97,7 @@ const MainPage = () => {
               </S.ContentEnd>
             </S.Container>
             <S.Line />
+            <S.CTitle>공유 여행 모아보기</S.CTitle>
             {data?.shared.map((item) => (
               <S.Content onClick={goChat} key={item.destId}>
                 <S.FlagText>
