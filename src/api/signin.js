@@ -9,7 +9,7 @@ export const Signin = async (cellphone, password) => {
 
     console.log(res);
 
-    const token = res.data.accessToken;
+    const token = res?.data.Authorization;
     localStorage.setItem("accessToken", token);
     localStorage.setItem("refreshToken", res.data.refreshToken);
 

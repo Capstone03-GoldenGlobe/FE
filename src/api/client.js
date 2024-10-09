@@ -7,8 +7,6 @@ client.defaults.withCredentials = true;
 
 //accessToken 저장
 const token = localStorage.getItem("accessToken");
-client.defaults.headers.common["Authorization"] = token
-  ? `Bearer ${token}`
-  : null;
+client.defaults.headers.common["Authorization"] = token ? `${token}` : null;
 
 export default client;
