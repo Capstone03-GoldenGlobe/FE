@@ -3,9 +3,20 @@ import profile from "../assets/profile.svg";
 import mypage from "../assets/mypage.svg";
 import logout from "../assets/logout.svg";
 import { useNavigate } from "react-router-dom";
+import { Logout } from "../api/logout";
 
 const SideBar = ({ data }) => {
   const navigate = useNavigate();
+
+  const onClickLogout = async () => {
+    try {
+      const res = await Logout();
+      localStorage.clear();
+      navigate("/login");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const goMain = () => {
     navigate("/");
@@ -51,7 +62,7 @@ const SideBar = ({ data }) => {
             마이페이지
           </Sub>
 
-          <Sub>
+          <Sub onClick={onClickLogout}>
             <img
               src={logout}
               style={{ width: "2rem", marginRight: "0.8rem" }}

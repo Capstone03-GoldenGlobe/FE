@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import ChatSideBar from "../components/ChatSideBar";
 import * as S from "./ChatBotPage.style";
 import sendArrow from "../assets/sendArrow.svg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Flex, Spin } from "antd";
 
@@ -11,11 +11,12 @@ const ChatBotPage = () => {
   const [isList, setIsList] = useState(false);
   const [isChat, setIsChat] = useState(true);
   const [IsContent, setIsContent] = useState(true);
+  const { id } = useParams();
 
   const navigate = useNavigate();
 
   const goCheckList = () => {
-    navigate("/list");
+    navigate(`/list/${id}`);
     setIsList(true);
     setIsChat(false);
   };

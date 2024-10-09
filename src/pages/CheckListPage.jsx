@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ListSideBar from "../components/ListSideBar";
 import * as S from "./CheckListPage.style";
 import CheckIndexBox from "../components/CheckIndexBox";
@@ -10,12 +10,10 @@ const CheckListPage = () => {
 
   const [data, setData] = useState([]);
 
-  const goChatBot = () => {
-    navigate("/chat");
-  };
+  const { id } = useParams();
 
-  const goCheckList = () => {
-    navigate("/list");
+  const goChatBot = () => {
+    navigate(`/chat/${id}`);
   };
 
   useEffect(() => {
@@ -33,15 +31,15 @@ const CheckListPage = () => {
   return (
     <>
       <div style={{ backgroundColor: "#f5f5f5" }}>
-        <ListSideBar data={data} />
+        <ListSideBar data={data ? data : null} />
         <S.Container>
           <S.IndexContainer>
             <S.IndexGray onClick={goChatBot}>챗봇</S.IndexGray>
-            <S.Index onClick={goCheckList}>체크리스트</S.Index>
+            <S.Index>체크리스트</S.Index>
           </S.IndexContainer>
 
           <S.Weather>🇺🇸 미국 샌프란시스코의 현재 기온: 32℃</S.Weather>
-          {data.map((list) => (
+          {data?.map((list) => (
             <CheckIndexBox data={list} />
           ))}
         </S.Container>

@@ -47,7 +47,7 @@ const ListSideBar = ({ data }) => {
           />
         </UserWrp>
 
-        {data.map((item) => (
+        {data?.map((item) => (
           <Index>{item?.groupName}</Index>
         ))}
 
