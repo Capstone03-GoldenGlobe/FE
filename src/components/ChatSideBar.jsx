@@ -2,39 +2,101 @@ import styled from "styled-components";
 import pdf from "../assets/pdf.svg";
 import trash from "../assets/trash.svg";
 import plus from "../assets/plus.svg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { PostPDF2 } from "../api/postPDF2";
+import { getPDFname } from "../api/getPDFname";
 
 const ChatSideBar = () => {
   const navigate = useNavigate();
+  // 파일 선택창을 열기 위한 참조값
+  const fileInputRef = useRef(null);
+
+  const { id } = useParams();
+
+  const [fileName, setFile] = useState("");
+  const [data, setData] = useState();
+
+  // api에 post 보내기
+  const postPdf = async (id, fileName) => {
+    try {
+      const res = await PostPDF2(id, fileName);
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const goMain = () => {
     navigate("/");
   };
+
+  // 파일 탐색기 열기
+  const handleButtonClick = () => {
+    fileInputRef.current.click();
+  };
+
+  // 파일 선택해서 state에 넣기
+  const onClickAddPdf = async (e) => {
+    const file = e.target.files[0];
+    setFile(file);
+    console.log(file);
+    postPdf(id, file);
+
+    await getData();
+  };
+
+  // pdf 이름 get 받아오기
+  const getData = async () => {
+    const res = await getPDFname(id);
+    console.log("pdf 이름:", res.data);
+    setData(res?.data);
+  };
+
+  // 페이지 마운트 시
+  useEffect(() => {
+    getData();
+  }, []);
+
+  // PDF 열기
+  const onClickPDF = useCallback((pdfPath) => {
+    if (pdfPath) {
+      window.open(pdfPath, "_blank");
+      console.log(pdfPath);
+    } else {
+      alert("PDF 경로가 없습니다.");
+    }
+  }, []);
+
   return (
     <>
       <Wrapper>
         <Title onClick={goMain}>GoldenGlobe</Title>
         <Country>🇹🇭 태국</Country>
 
-        <PdfBox>
-          <img src={pdf} style={{ width: "2.2rem" }} />
-          <PdfName>호텔예약</PdfName>
-          <img src={trash} />
-        </PdfBox>
+        {data?.map((item) => (
+          <PdfBox>
+            <img src={pdf} style={{ width: "2.2rem" }} />
+            <PdfName onClick={() => onClickPDF(item.pdfPath)}>
+              {item?.pdfName.split(".").slice(0, -1).join(".")}
+            </PdfName>
+            <img src={trash} />
+          </PdfBox>
+        ))}
 
-        <PdfBox>
-          <img src={pdf} style={{ width: "2.2rem" }} />
-          <PdfName>호텔예약</PdfName>
-          <img src={trash} />
-        </PdfBox>
+        {/* input 요소는 화면에 표시되지 않음 */}
+        <input
+          type="file"
+          ref={fileInputRef}
+          style={{ display: "none" }} // 숨기기
+          onChange={onClickAddPdf}
+        />
 
-        <PdfBox>
-          <img src={pdf} style={{ width: "2.2rem" }} />
-          <PdfName>호텔예약</PdfName>
-          <img src={trash} />
-        </PdfBox>
-
-        <img src={plus} style={{ width: "2.5rem", cursor: "pointer" }} />
+        <img
+          src={plus}
+          style={{ width: "2.5rem", cursor: "pointer" }}
+          onClick={handleButtonClick}
+        />
       </Wrapper>
     </>
   );
@@ -102,7 +164,7 @@ const PdfName = styled.div`
   color: #000;
   text-align: center;
   font-family: var(--korean);
-  font-size: 1.3011rem;
+  font-size: 1rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;

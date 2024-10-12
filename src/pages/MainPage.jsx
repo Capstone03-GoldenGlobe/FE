@@ -88,20 +88,6 @@ const MainPage = () => {
                 </S.Content>
               ))}
 
-              {/* ///////////////// */}
-
-              <S.Content>
-                <S.FlagText>
-                  <S.Flag>🇹🇭</S.Flag>
-                  <S.CountryWrapper>
-                    <S.Country>태국</S.Country>
-                    <S.City>치앙마이</S.City>
-                  </S.CountryWrapper>
-                </S.FlagText>
-
-                <S.Date>2024.09.10 - 09.15</S.Date>
-              </S.Content>
-
               <S.ContentEnd onClick={onClickAddNew}>
                 <S.Add>
                   새로운 여행을 <br />
