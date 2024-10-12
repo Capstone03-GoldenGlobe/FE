@@ -9,7 +9,7 @@ import Modal from "./Modal";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const ListSideBar = ({ data }) => {
+const ListSideBar = ({ data, id }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onClickPlus = () => {
@@ -66,6 +66,7 @@ const ListSideBar = ({ data }) => {
         onCancel={() => setIsModalOpen(false)}
         isSingleButton={true}
         showTextInput={true}
+        id={id}
       />
     </>
   );

@@ -31,7 +31,7 @@ const CheckListPage = () => {
   return (
     <>
       <div style={{ backgroundColor: "#f5f5f5" }}>
-        <ListSideBar data={data ? data : null} />
+        <ListSideBar data={data ? data : null} id={id} />
         <S.Container>
           <S.IndexContainer>
             <S.IndexGray onClick={goChatBot}>챗봇</S.IndexGray>

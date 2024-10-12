@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "./Botton";
+import { Share } from "../api/share";
+
+const color = ["red", "orange", "green", "blue"];
 
 // Modal 컴포넌트
 const Modal = ({
@@ -13,9 +16,24 @@ const Modal = ({
   onCancel,
   isSingleButton = false,
   showTextInput = false,
+  id,
 }) => {
-  const [inputValue, setInputValue] = useState("");
+  const [cellPhone, setCellphone] = useState("");
   if (!isOpen) return null;
+
+  const onChangeShare = (e) => {
+    setCellphone(e.target.value);
+  };
+
+  const shareFamily = async () => {
+    try {
+      const res = await Share(cellPhone, color[2], id);
+      console.log(res);
+      console.log(id);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <ModalBackground onClick={onClose}>
@@ -28,15 +46,15 @@ const Modal = ({
                 <Text>아이디</Text>
                 <StyledInput
                   type="text"
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
+                  value={cellPhone}
+                  onChange={onChangeShare}
                 />
               </InputWrp>
             </>
           )}
 
           <ButtonContainer isSingleButton={isSingleButton}>
-            <Button type={"L"} onClick={() => onConfirm(inputValue)}>
+            <Button type={"L"} onClick={shareFamily}>
               {confirmText}
             </Button>
           </ButtonContainer>
