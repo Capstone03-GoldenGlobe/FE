@@ -100,21 +100,26 @@ const MainPage = () => {
             </S.Container>
             <S.Line />
             <S.CTitle>공유 여행 모아보기</S.CTitle>
-            {data?.shared.map((item) => (
-              <S.Content onClick={goChat} key={item.destId}>
-                <S.FlagText>
-                  <S.Flag>🇹🇭</S.Flag>
-                  <S.CountryWrapper>
-                    <S.Country>{item?.country}</S.Country>
-                    <S.City>{item?.city}</S.City>
-                  </S.CountryWrapper>
-                </S.FlagText>
+            <S.Container>
+              {data?.shared.map((item) => (
+                <S.Content
+                  onClick={() => goChat(item.destId)}
+                  key={item.destId}
+                >
+                  <S.FlagText>
+                    <S.Flag>🇹🇭</S.Flag>
+                    <S.CountryWrapper>
+                      <S.Country>{item?.country}</S.Country>
+                      <S.City>{item?.city}</S.City>
+                    </S.CountryWrapper>
+                  </S.FlagText>
 
-                <S.Date>
-                  {item.startDate}-{item.endDate}
-                </S.Date>
-              </S.Content>
-            ))}
+                  <S.Date>
+                    {item.startDate}-{item.endDate}
+                  </S.Date>
+                </S.Content>
+              ))}
+            </S.Container>
           </S.ContentsWrapper>
         </>
       ) : (

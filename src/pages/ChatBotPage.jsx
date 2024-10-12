@@ -1,10 +1,12 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ChatSideBar from "../components/ChatSideBar";
 import * as S from "./ChatBotPage.style";
 import sendArrow from "../assets/sendArrow.svg";
 import { useNavigate, useParams } from "react-router-dom";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Flex, Spin } from "antd";
+import { getChatlog } from "../api/getChatlog";
+import { ChatbotQA } from "../api/chatbotQA";
 
 const ChatBotPage = () => {
   const [loading, setLoading] = useState(false);
@@ -12,6 +14,9 @@ const ChatBotPage = () => {
   const [isChat, setIsChat] = useState(true);
   const [IsContent, setIsContent] = useState(true);
   const { id } = useParams();
+  const [chatData, setChatData] = useState([]);
+
+  const [question, setQuestion] = useState("");
 
   const navigate = useNavigate();
 
@@ -20,6 +25,40 @@ const ChatBotPage = () => {
     setIsList(true);
     setIsChat(false);
   };
+
+  const onChageQuestion = (e) => {
+    setQuestion(e.target.value);
+  };
+
+  // 챗봇에 post 보내기
+  const postChat = async () => {
+    const res = await ChatbotQA(question, id);
+  };
+
+  const onClickSend = () => {
+    console.log("버튼 클릭");
+    postChat();
+  };
+
+  // 챗봇 로그 불러오기
+  const getChat = async (id) => {
+    try {
+      const res = await getChatlog(id);
+      setChatData(res);
+      if (res) {
+        setIsContent(true);
+      }
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // 페이지 마운트시 챗봇 로그 불러오기
+  useEffect(() => {
+    getChat(id);
+  }, []);
+
   return (
     <div style={{ backgroundColor: "#f5f5f5" }}>
       <ChatSideBar />
@@ -59,22 +98,28 @@ const ChatBotPage = () => {
           <>
             {IsContent ? (
               <>
-                <S.Wrapper2>
-                  <S.MyWrp>
-                    <S.MyTextbox>호텔이 어디에 있어?</S.MyTextbox>
-                  </S.MyWrp>
-                  <S.MyWrp>
-                    <S.MyTextbox>당장 말해.</S.MyTextbox>
-                  </S.MyWrp>
+                {Array.isArray(chatData) &&
+                  chatData?.map((item) => (
+                    <S.Wrapper2>
+                      {item?.qna === "Q" ? (
+                        <S.MyWrp key={item.logId}>
+                          <S.MyTextbox>{item?.content}</S.MyTextbox>
+                        </S.MyWrp>
+                      ) : (
+                        <S.ChatWrp key={item.logId}>
+                          <S.ChatTextbox>{item?.content}</S.ChatTextbox>
+                        </S.ChatWrp>
+                      )}
 
-                  <S.ChatWrp>
-                    <S.ChatTextbox>호텔은 여기 입니다.</S.ChatTextbox>
-                  </S.ChatWrp>
-                  <S.InputWrapper>
-                    <S.TextArea />
-                    <S.Send src={sendArrow} />
-                  </S.InputWrapper>
-                </S.Wrapper2>
+                      <S.InputWrapper>
+                        <S.TextArea
+                          value={question}
+                          onChange={onChageQuestion}
+                        />
+                        <S.Send src={sendArrow} onClick={onClickSend} />
+                      </S.InputWrapper>
+                    </S.Wrapper2>
+                  ))}
               </>
             ) : (
               <>
@@ -85,8 +130,8 @@ const ChatBotPage = () => {
                   </S.Comment>
 
                   <S.InputWrapper>
-                    <S.TextArea />
-                    <S.Send src={sendArrow} />
+                    <S.TextArea value={question} onChange={onChageQuestion} />
+                    <S.Send src={sendArrow} onClick={onClickSend} />
                   </S.InputWrapper>
                 </S.Wrapper>
               </>

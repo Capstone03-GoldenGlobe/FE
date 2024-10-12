@@ -13,7 +13,7 @@ export const ContentsWrapper = styled.div`
   flex: 1; /* 남은 공간을 채우도록 설정 */
   padding-top: 3.5rem;
   padding-left: 4rem;
-  padding-right: 3rem;
+
   left: 16.15rem;
   margin-left: 16.15rem;
 `;

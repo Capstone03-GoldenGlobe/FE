@@ -150,9 +150,9 @@ export const Wrapper2 = styled.div`
   flex: 1; /* 남은 공간을 채우도록 설정 */
   display: flex;
   flex-direction: column;
-  align-items: center;
+
   padding-top: 3rem;
-  height: 100vh;
+
   left: 16.15rem;
   margin-left: 16.15rem;
   background-color: white;
@@ -175,6 +175,7 @@ export const ChatTextbox = styled.div`
 
 export const ChatWrp = styled.div`
   width: 100%;
+  max-width: 60%;
   display: flex;
   flex-direction: column;
   align-items: start;
