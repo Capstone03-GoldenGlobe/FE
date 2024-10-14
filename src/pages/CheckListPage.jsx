@@ -18,7 +18,7 @@ const CheckListPage = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await getCheckListAll();
+      const res = await getCheckListAll(id);
       console.log(res);
       setData(res?.data.groups);
     };

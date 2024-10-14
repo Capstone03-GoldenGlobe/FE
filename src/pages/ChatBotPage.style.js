@@ -150,7 +150,6 @@ export const Wrapper2 = styled.div`
   flex: 1; /* 남은 공간을 채우도록 설정 */
   display: flex;
   flex-direction: column;
-
   padding-top: 3rem;
 
   left: 16.15rem;
@@ -165,12 +164,12 @@ export const ChatTextbox = styled.div`
   background: #ffeece;
   padding: 0.85rem 1.2rem;
   color: #000;
-  text-align: center;
   font-family: var(--korean);
   font-size: 1.4rem;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+  text-align: left;
 `;
 
 export const ChatWrp = styled.div`
@@ -180,4 +179,8 @@ export const ChatWrp = styled.div`
   flex-direction: column;
   align-items: start;
   margin-bottom: 1rem;
+`;
+
+export const ChatContainer = styled.div`
+  height: 50%;
 `;
