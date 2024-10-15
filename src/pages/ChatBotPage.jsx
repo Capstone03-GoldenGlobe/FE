@@ -12,7 +12,7 @@ const ChatBotPage = () => {
   const [loading, setLoading] = useState(false);
   const [isList, setIsList] = useState(false);
   const [isChat, setIsChat] = useState(true);
-  const [IsContent, setIsContent] = useState(true);
+  const [IsContent, setIsContent] = useState(false);
   const { id } = useParams();
   const [chatData, setChatData] = useState([]);
 
@@ -72,68 +72,61 @@ const ChatBotPage = () => {
           </S.IndexGray>
         </S.IndexContainer>
 
-        <S.ChatContainer>
-          {/* 흰 바탕 */}
-          {loading ? (
-            <>
-              <S.Wrapper>
-                <S.Comment>PDF를 분석하고 있습니다.</S.Comment>
-                <Flex align="center" gap="middle">
-                  <Spin
-                    indicator={
-                      <LoadingOutlined
-                        style={{
-                          fontSize: "7rem",
-                          color: "#ffa83e",
-                          marginBottom: "3.35rem",
-                          marginTop: "4rem",
-                        }}
-                        spin
-                      />
-                    }
-                  />
-                </Flex>
+        {/* 흰 바탕 */}
+        {loading ? (
+          <>
+            <S.Wrapper>
+              <S.Comment>PDF를 분석하고 있습니다.</S.Comment>
+              <Flex align="center" gap="middle">
+                <Spin
+                  indicator={
+                    <LoadingOutlined
+                      style={{
+                        fontSize: "7rem",
+                        color: "#ffa83e",
+                        marginBottom: "3.35rem",
+                        marginTop: "4rem",
+                      }}
+                      spin
+                    />
+                  }
+                />
+              </Flex>
 
-                <S.Comment>잠시만 기다려주세요!</S.Comment>
-              </S.Wrapper>
-            </>
-          ) : (
-            <>
-              {IsContent ? (
-                <>
-                  {Array.isArray(chatData) &&
-                    chatData?.map((item) => (
-                      <S.Wrapper2>
-                        {item?.qna === "Q" ? (
-                          <S.MyWrp key={item.logId}>
-                            <S.MyTextbox>{item?.content}</S.MyTextbox>
-                          </S.MyWrp>
-                        ) : (
-                          <S.ChatWrp key={item.logId}>
-                            <S.ChatTextbox>{item?.content}</S.ChatTextbox>
-                          </S.ChatWrp>
-                        )}
-                      </S.Wrapper2>
-                    ))}
-                </>
-              ) : (
-                <>
-                  <S.Wrapper>
-                    <S.Comment>
-                      당신의 여행을 도와줄 챗봇이 준비 되었습니다. 무엇이든
-                      물어보세요!
-                    </S.Comment>
-
-                    <S.InputWrapper>
-                      <S.TextArea value={question} onChange={onChageQuestion} />
-                      <S.Send src={sendArrow} onClick={onClickSend} />
-                    </S.InputWrapper>
-                  </S.Wrapper>
-                </>
-              )}
-            </>
-          )}
-        </S.ChatContainer>
+              <S.Comment>잠시만 기다려주세요!</S.Comment>
+            </S.Wrapper>
+          </>
+        ) : (
+          <>
+            {IsContent ? (
+              <S.Wrapper2>
+                {Array.isArray(chatData) &&
+                  chatData?.map((item) => (
+                    <>
+                      {item?.qna === "Q" ? (
+                        <S.MyWrp key={item.logId}>
+                          <S.MyTextbox>{item?.content}</S.MyTextbox>
+                        </S.MyWrp>
+                      ) : (
+                        <S.ChatWrp key={item.logId}>
+                          <S.ChatTextbox>{item?.content}</S.ChatTextbox>
+                        </S.ChatWrp>
+                      )}
+                    </>
+                  ))}
+              </S.Wrapper2>
+            ) : (
+              <>
+                <S.Wrapper>
+                  <S.Comment>
+                    당신의 여행을 도와줄 챗봇이 준비 되었습니다. 무엇이든
+                    물어보세요!
+                  </S.Comment>
+                </S.Wrapper>
+              </>
+            )}
+          </>
+        )}
 
         <S.InputWrapper>
           <S.TextArea value={question} onChange={onChageQuestion} />

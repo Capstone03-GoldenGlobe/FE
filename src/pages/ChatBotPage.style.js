@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   padding-top: 7rem;
-  height: 100vh;
+  height: 50vh;
   left: 16.15rem;
   margin-left: 16.15rem;
   background-color: white;
@@ -120,6 +120,8 @@ export const InputWrapper = styled.div`
   bottom: 2.65rem;
   width: 65%;
   align-items: end;
+  margin-left: 16.15rem;
+  padding-left: 4.3rem;
 `;
 
 export const MyTextbox = styled.div`
@@ -157,6 +159,9 @@ export const Wrapper2 = styled.div`
   background-color: white;
   padding-left: 4.3rem;
   padding-right: 4.3rem;
+
+  max-height: 60vh;
+  overflow-y: auto;
 `;
 
 export const ChatTextbox = styled.div`
@@ -179,8 +184,4 @@ export const ChatWrp = styled.div`
   flex-direction: column;
   align-items: start;
   margin-bottom: 1rem;
-`;
-
-export const ChatContainer = styled.div`
-  height: 50%;
 `;

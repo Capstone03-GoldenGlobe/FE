@@ -1,6 +1,6 @@
 import chatbot from "./chatbot";
 
-export const ChatbotQA = async (id, question) => {
+export const ChatbotQA = async (question, id) => {
   try {
     const res = await chatbot.post(`chatbot/question/${id}`, {
       question: String(question),
