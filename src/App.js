@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import Signup1Page from "./pages/Signup1Page";
 import Signup2Page from "./pages/Signup2Page";
@@ -11,14 +11,41 @@ import Mypage from "./pages/Mypage";
 import ChatBotPage from "./pages/ChatBotPage";
 import CheckListPage from "./pages/CheckListPage";
 import AddNewTrip from "./components/AddNewTrip";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [isLogedin, setIsLogedin] = useState(false);
+
+  // 로그인 상태 확인 함수
+  const checkLoginStatus = () => {
+    if (localStorage.getItem("accessToken")) {
+      // 로그인된 상태로 설정
+      setIsLogedin(true);
+    } else {
+      // 로그인되지 않은 상태로 설정
+      setIsLogedin(false);
+    }
+  };
+
+  // 컴포넌트가 처음 렌더링될 때 로그인 상태 확인
+  useEffect(() => {
+    checkLoginStatus();
+  }, [localStorage.getItem("accessToken")]);
+
+  // 컴포넌트가 처음 렌더링될 때 로그인 상태 확인
+  useEffect(() => {
+    checkLoginStatus();
+  }, []);
   return (
     <>
       <BrowserRouter>
         <Routes>
           {/* 메인 페이지 */}
-          <Route exact path="/" element={<MainPage />} />
+          <Route
+            exact
+            path="/"
+            element={isLogedin ? <MainPage /> : <Navigate to="/login" />}
+          />
 
           {/* 로그인 페이지 */}
           <Route exact path="/login" element={<LoginPage />} />
