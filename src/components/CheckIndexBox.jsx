@@ -73,11 +73,11 @@ const CheckIndexBox = ({ data, id }) => {
   };
 
   // 엔터 눌렀을 때
-  const handleKeyPress = async (e) => {
-    if (e.key === "Enter") {
-      postItem();
-    }
-  };
+  // const handleKeyPress = async (e) => {
+  //   if (e.key === "Enter") {
+  //     postItem();
+  //   }
+  // };
 
   // 입력창이 포커스를 잃었을 때 그룹 추가
   const handleBlur = () => {
@@ -94,7 +94,6 @@ const CheckIndexBox = ({ data, id }) => {
               color={checkbox.color}
               value={checkbox ? checkbox.value : indexInput}
               onChange={(e) => onChangeIndex(e, checkbox.id)}
-              onKeyPress={handleKeyPress}
               onBlur={handleBlur}
             />
           ))}
