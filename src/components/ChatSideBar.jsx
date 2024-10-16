@@ -22,6 +22,7 @@ const ChatSideBar = () => {
     try {
       const res = await PostPDF2(id, fileName);
       console.log(res);
+      getData();
     } catch (err) {
       console.log(err);
     }
