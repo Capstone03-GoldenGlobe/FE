@@ -24,10 +24,10 @@ const ListSideBar = ({ id, data }) => {
     setGroup(groupResponse?.data.groups);
   };
 
-  // 페이지가 로드될 때 그룹 목록 가져오기
-  useEffect(() => {
-    getGroup(); // 컴포넌트 마운트 시 그룹 가져오기
-  }, [group]);
+  // // 페이지가 로드될 때 그룹 목록 가져오기
+  // useEffect(() => {
+  //   getGroup(); // 컴포넌트 마운트 시 그룹 가져오기
+  // }, [group]);
 
   // 항목 추가 눌렀을 때
   const addGroup = () => {

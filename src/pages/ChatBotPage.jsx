@@ -35,11 +35,11 @@ const ChatBotPage = () => {
     const res = await ChatbotQA(question, id);
   };
 
-  const onClickSend = () => {
+  const onClickSend = async () => {
     console.log("버튼 클릭");
-    postChat();
-    getChat(id);
     setQuestion("");
+    await postChat();
+    getChat(id);
   };
 
   // 챗봇 로그 불러오기
