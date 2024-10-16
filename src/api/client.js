@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const client = axios.create();
-client.defaults.baseURL = "http://3.36.229.235:8080/";
+client.defaults.baseURL = "/api";
 
 client.defaults.withCredentials = true;
 
