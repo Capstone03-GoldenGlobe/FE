@@ -2,7 +2,7 @@ import styled from "styled-components";
 import check from "../assets/check.svg";
 import { useState } from "react";
 
-const Checkbox = ({ color, value, onChange }) => {
+const Checkbox = ({ color, value, onChange, onKeyPress, onBlur }) => {
   const [isChecked, setIsChecked] = useState(false);
   const handleCheckBox = () => {
     setIsChecked(!isChecked);
@@ -14,7 +14,12 @@ const Checkbox = ({ color, value, onChange }) => {
         <Box isChecked={isChecked} color={color} onClick={handleCheckBox}>
           {isChecked && <img src={check} style={{ width: "15px" }} />}
         </Box>
-        <Input value={value} onChange={onChange} />
+        <Input
+          value={value}
+          onChange={onChange}
+          onKeyPress={onKeyPress}
+          onBlur={onBlur}
+        />
       </Wrp>
     </>
   );

@@ -40,7 +40,7 @@ const CheckListPage = () => {
 
           <S.Weather>🇺🇸 미국 샌프란시스코의 현재 기온: 32℃</S.Weather>
           {data?.map((list) => (
-            <CheckIndexBox data={list} />
+            <CheckIndexBox data={list} id={id} />
           ))}
         </S.Container>
       </div>

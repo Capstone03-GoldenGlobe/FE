@@ -3,8 +3,9 @@ import styled from "styled-components";
 import memo from "../assets/memo.svg";
 import checkPlus from "../assets/checkPlus.svg";
 import { useEffect, useState } from "react";
+import { sendChecklistItem } from "../api/checkListItem";
 
-const CheckIndexBox = ({ data }) => {
+const CheckIndexBox = ({ data, id }) => {
   const [checkboxes, setCheckboxes] = useState([]);
   const [memoInput, setMemoInput] = useState([]);
   const [memeContent, setMemoContent] = useState("");
@@ -53,6 +54,13 @@ const CheckIndexBox = ({ data }) => {
     }
   }, [data]);
 
+  // item post 함수
+  const postItem = async () => {
+    const res = await sendChecklistItem(id, data.groupId, indexInput);
+
+    console.log(res);
+  };
+
   const onChangeIndex = (e, id) => {
     // 체크박스의 id를 사용하여 해당 체크박스의 값을 업데이트
     setCheckboxes((prev) =>
@@ -60,28 +68,34 @@ const CheckIndexBox = ({ data }) => {
         checkbox.id === id ? { ...checkbox, value: e.target.value } : checkbox
       )
     );
+
+    setIndexInput(e.target.value);
   };
 
   // 엔터 눌렀을 때
   const handleKeyPress = async (e) => {
     if (e.key === "Enter") {
+      postItem();
     }
   };
 
   // 입력창이 포커스를 잃었을 때 그룹 추가
-  const handleBlur = () => {};
+  const handleBlur = () => {
+    postItem();
+  };
 
-  console.log("props 확인", data);
   return (
     <ListBox>
       <div>
         <Checks>
-          {checkboxes.map((checkbox) => (
+          {checkboxes?.map((checkbox) => (
             <Checkbox
               key={checkbox.id}
               color={checkbox.color}
               value={checkbox ? checkbox.value : indexInput}
               onChange={(e) => onChangeIndex(e, checkbox.id)}
+              onKeyPress={handleKeyPress}
+              onBlur={handleBlur}
             />
           ))}
         </Checks>
