@@ -51,9 +51,7 @@ const LoginPage = () => {
       const res = await Signin(cellphone, password);
       console.log(res);
 
-      if (res.status == 200) {
-        navigate("/");
-      }
+      navigate("/");
     } catch (err) {
       console.log(err);
       alert("이메일/비밀번호가 일치하지 않습니다");
