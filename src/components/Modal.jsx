@@ -19,6 +19,7 @@ const Modal = ({
   id,
 }) => {
   const [cellPhone, setCellphone] = useState("");
+
   if (!isOpen) return null;
 
   const onChangeShare = (e) => {
@@ -30,6 +31,7 @@ const Modal = ({
       const res = await Share(cellPhone, color[2], id);
       console.log(res);
       console.log(id);
+      onClose();
     } catch (err) {
       console.log(err);
     }
