@@ -37,20 +37,20 @@ const ChatBotPage = () => {
 
   const onClickSend = async () => {
     console.log("버튼 클릭");
-    setQuestion("");
     await postChat();
-    getChat(id);
+    setQuestion("");
+    getChat();
   };
 
   // 챗봇 로그 불러오기
-  const getChat = async (id) => {
+  const getChat = async () => {
     try {
       const res = await getChatlog(id);
       setChatData(res);
       if (res) {
         setIsContent(true);
       }
-      console.log(res);
+      console.log("채팅 데이터", res);
     } catch (err) {
       console.log(err);
     }
