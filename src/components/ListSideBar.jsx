@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { sendChecklistGroup } from "../api/sendCheckListGroup";
 import { getCheckListAll } from "../api/checkList";
+import { sharedUser } from "../api/sharedUser";
 
 const ListSideBar = ({ id, data }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -74,6 +75,11 @@ const ListSideBar = ({ id, data }) => {
 
   const goMain = () => {
     navigate("/");
+  };
+
+  // 공유중인 사용자 가져오기
+  const getSharedUser = async () => {
+    const res = sharedUser(id);
   };
 
   return (
