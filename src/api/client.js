@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const client = axios.create();
-client.defaults.baseURL = "https://golden-globe.shop:8443/";
+client.defaults.baseURL = "https://golden-globe.shop:8080/";
 
 client.defaults.withCredentials = true;
 
