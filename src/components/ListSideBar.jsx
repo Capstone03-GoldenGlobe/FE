@@ -17,6 +17,7 @@ const ListSideBar = ({ id, data }) => {
   const [groupName, setGroupName] = useState("");
   const [isClicked, setIsClicked] = useState(false);
   const [group, setGroup] = useState([]);
+  const [suser, setSuser] = useState([]);
   const navigate = useNavigate();
 
   // 항목 Get
@@ -25,10 +26,19 @@ const ListSideBar = ({ id, data }) => {
     setGroup(groupResponse?.data.groups);
   };
 
-  // // 페이지가 로드될 때 그룹 목록 가져오기
-  // useEffect(() => {
-  //   getGroup(); // 컴포넌트 마운트 시 그룹 가져오기
-  // }, [group]);
+  useEffect(() => {
+    const fetchSharedUser = async () => {
+      try {
+        const res = await sharedUser(id);
+        console.log("공유 사용자", res); // 데이터를 제대로 받아오는지 확인
+        setSuser(res.data);
+      } catch (error) {
+        console.error("Error fetching shared users:", error);
+      }
+    };
+
+    fetchSharedUser();
+  }, []);
 
   // 항목 추가 눌렀을 때
   const addGroup = () => {
@@ -77,29 +87,36 @@ const ListSideBar = ({ id, data }) => {
     navigate("/");
   };
 
-  // 공유중인 사용자 가져오기
-  const getSharedUser = async () => {
-    const res = sharedUser(id);
-  };
-
   return (
     <>
       <Wrapper>
         <Title onClick={goMain}>GoldenGlobe</Title>
         <Country>🇹🇭 태국</Country>
         <UserWrp>
-          <img
-            src={profileBlue}
-            style={{ width: "3rem", marginRight: "0.4rem" }}
-          />
-          <img
+          {suser?.map((item) => (
+            <Suser>
+              <img
+                key={item.user_id}
+                src={profileBlue}
+                style={{
+                  width: "3rem",
+                  marginRight: "0.4rem",
+
+                  marginLeft: "5px",
+                }}
+              />
+              <SuserName>{item.user_nickname}</SuserName>
+            </Suser>
+          ))}
+
+          {/* <img
             src={profileRed}
             style={{ width: "3rem", marginRight: "0.4rem" }}
           />
           <img
             src={profileGreen}
             style={{ width: "3rem", marginRight: "0.4rem" }}
-          />
+          /> */}
           <img
             src={plusUser}
             style={{ width: "2.8rem", cursor: "pointer" }}
@@ -227,5 +244,16 @@ const GrpInput = styled.input`
   padding-bottom: 2px;
   color: white;
   padding-left: 3px;
+  text-align: center;
+`;
+
+const Suser = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const SuserName = styled.div`
   text-align: center;
 `;
