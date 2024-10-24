@@ -6,11 +6,19 @@ import { useNavigate } from "react-router-dom";
 import InputBox from "../components/InputBox";
 import info from "../assets/info.svg";
 import { useState } from "react";
+import { SignupApi } from "../api/signup";
 
 const Signup3Page = () => {
   const navigate = useNavigate();
-  const goNext = () => {
-    navigate("/");
+
+  const goNext = async () => {
+    try {
+      await Signup();
+      console.log("회원가입 성공");
+      navigate("/login");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const [nickname, setNickname] = useState("");
@@ -18,9 +26,8 @@ const Signup3Page = () => {
   const [password, setPassword] = useState("");
   const [conpw, setConpw] = useState("");
 
-  const getData = () => {
-    localStorage.getItem("userData");
-  };
+  const savedUserData = JSON.parse(localStorage.getItem("userData"));
+  console.log(savedUserData);
 
   const goBack = () => {
     navigate(-1);
@@ -37,6 +44,32 @@ const Signup3Page = () => {
   const onChangePw = (e) => {
     setPassword(e.target.value);
   };
+
+  const Signup = async () => {
+    console.log(
+      "회원기입 인자 확인: ",
+      savedUserData.name,
+      savedUserData.birth,
+      savedUserData.cellphone,
+      password,
+      nickname,
+      (savedUserData.profile = ""),
+      savedUserData.gender
+    );
+    const res = await SignupApi(
+      savedUserData.name,
+      savedUserData.birth,
+      savedUserData.cellphone,
+      password,
+      nickname,
+      (savedUserData.profile = ""),
+      savedUserData.gender
+    );
+
+    console.log("회원가입 res", res);
+    localStorage.removeItem("userData");
+  };
+
   return (
     <>
       <S.Wrapper>
@@ -60,7 +93,7 @@ const Signup3Page = () => {
           </S.InputWrp2>
 
           {/* 이메일 추가 */}
-          <S.InputWrp1>
+          {/* <S.InputWrp1>
             <S.Title>이메일</S.Title>
             <InputBox
               type="email"
@@ -69,7 +102,7 @@ const Signup3Page = () => {
               value={email}
               onChange={onChangeEmail}
             />
-          </S.InputWrp1>
+          </S.InputWrp1> */}
           {/* /////// */}
 
           {/* <S.InputWrp>
@@ -90,6 +123,8 @@ const Signup3Page = () => {
               type="password"
               width="22.25rem"
               placeholder={"비밀번호를 입력해주세요."}
+              onChange={onChangePw}
+              value={password}
             />
           </S.InputWrp1>
           <S.InputWrp1>

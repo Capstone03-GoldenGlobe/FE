@@ -16,7 +16,7 @@ const Signup1Page = () => {
 
   const goNext = () => {
     navigate("/signup3");
-    localStorage.setItem("userData", userData);
+    localStorage.setItem("userData", JSON.stringify(userData));
     console.log(userData);
   };
 
@@ -85,7 +85,7 @@ const Signup1Page = () => {
             />
           </S.InputWrp>
 
-          <S.InputWrp2>
+          <S.InputWrp>
             <S.Title>전화번호</S.Title>
             <InputBox
               type="text"
@@ -94,18 +94,18 @@ const Signup1Page = () => {
               value={cellphone}
               onChange={onChangePhone}
             />
-            <Button type="S" color="o">
+            {/* <Button type="S" color="o">
               인증 요청
-            </Button>
-          </S.InputWrp2>
+            </Button> */}
+          </S.InputWrp>
 
-          <S.InputWrp3>
+          {/* <S.InputWrp3>
             <S.Title>인증 번호</S.Title>
             <InputBox type="text" width="9.9rem" placeholder={"1234"} />
             <Button type="S" color="o">
               인증 확인
             </Button>
-          </S.InputWrp3>
+          </S.InputWrp3> */}
         </div>
 
         <S.BtnWrapper>
