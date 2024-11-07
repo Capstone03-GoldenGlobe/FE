@@ -194,3 +194,19 @@ export const Line = styled.div`
   background: #d9d9d9;
   margin-bottom: 3rem;
 `;
+
+export const Trash = styled.img`
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+`;
+
+export const Twrp = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  padding-left: 5px;
+  padding-top: 5px;
+
+  position: absolute;
+`;

@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import AddNewTrip from "../components/AddNewTrip";
 import { mainPage } from "../api/main";
 import AddNewModal from "../components/AddNewModal";
+import trashcan from "../assets/trashcan.svg";
+import { deleteTravel } from "../api/deleteTravel";
 
 const MainPage = () => {
   const [contents, setContents] = useState(false);
@@ -60,6 +62,16 @@ const MainPage = () => {
   const onClickAddNew = () => {
     setIsModalOpen(true);
   };
+
+  // 삭제하기
+  const TravelDelete = async (id) => {
+    const res = await deleteTravel(id);
+
+    console.log("삭제:", res);
+
+    getData();
+  };
+
   return (
     <>
       <SideBar data={data?.nickname} />
@@ -70,12 +82,13 @@ const MainPage = () => {
 
             <S.Container>
               {data?.travelLists.map((item) => (
-                <S.Content
-                  onClick={() => goChat(item.destId)}
-                  key={item.destId}
-                >
-                  <S.FlagText>
+                <S.Content key={item.destId}>
+                  <S.Twrp onClick={() => TravelDelete(item.destId)}>
+                    <img src={trashcan} />
+                  </S.Twrp>
+                  <S.FlagText onClick={() => goChat(item.destId)}>
                     <S.Flag>🇹🇭</S.Flag>
+
                     <S.CountryWrapper>
                       <S.Country>{item?.country}</S.Country>
                       <S.City>{item?.city}</S.City>

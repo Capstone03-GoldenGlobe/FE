@@ -1,4 +1,10 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+} from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import Signup1Page from "./pages/Signup1Page";
 import Signup2Page from "./pages/Signup2Page";
@@ -12,30 +18,34 @@ import ChatBotPage from "./pages/ChatBotPage";
 import CheckListPage from "./pages/CheckListPage";
 import AddNewTrip from "./components/AddNewTrip";
 import { useEffect, useState } from "react";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   const [isLogedin, setIsLogedin] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // 초기 로딩 상태 추가
 
-  // 로그인 상태 확인 함수
-  const checkLoginStatus = () => {
-    if (localStorage.getItem("accessToken")) {
-      // 로그인된 상태로 설정
-      setIsLogedin(true);
-    } else {
-      // 로그인되지 않은 상태로 설정
-      setIsLogedin(false);
-    }
-  };
-
-  // 컴포넌트가 처음 렌더링될 때 로그인 상태 확인
   useEffect(() => {
-    checkLoginStatus();
-  }, [localStorage.getItem("accessToken")]);
+    // 로컬 스토리지에서 로그인 상태 가져오기
+    const checkLoginStatus = async () => {
+      // 로딩 시작
+      setIsLoading(true);
 
-  // 컴포넌트가 처음 렌더링될 때 로그인 상태 확인
-  useEffect(() => {
+      // 로그인 상태 확인
+      const isAuthenticated = Boolean(localStorage.getItem("accessToken"));
+      setIsLogedin(isAuthenticated);
+
+      // 로딩 완료
+      setIsLoading(false);
+    };
+
     checkLoginStatus();
   }, []);
+
+  // 로딩 중일 때는 빈 화면 또는 로딩 스피너 등을 표시할 수 있습니다.
+  if (isLoading) {
+    return <div>Loading...</div>; // 로딩 중일 때 보여줄 UI
+  }
+
   return (
     <>
       <BrowserRouter>
