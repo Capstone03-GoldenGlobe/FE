@@ -1,11 +1,34 @@
 import styled from "styled-components";
 import check from "../assets/check.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { isMemoCheckedApi } from "../api/isCheck";
 
-const Checkbox = ({ color, value, onChange, onKeyPress, onBlur }) => {
-  const [isChecked, setIsChecked] = useState(false);
+const Checkbox = ({
+  color,
+  value,
+  onChange,
+  onKeyPress,
+  onBlur,
+  isCheckedProps,
+  id,
+}) => {
+  const [isChecked, setIsChecked] = useState(isCheckedProps || false);
+
+  // Sync isChecked with isCheckedProps on mount and when isCheckedProps changes
+  useEffect(() => {
+    setIsChecked(isCheckedProps);
+  }, [isCheckedProps]);
+
   const handleCheckBox = () => {
-    setIsChecked(!isChecked);
+    checkPut();
+  };
+
+  // 체크 on/off 수정 api
+  const checkPut = async () => {
+    const res = await isMemoCheckedApi(id);
+
+    console.log("체크 표시", res);
+    setIsChecked(res?.data.data.ischecked);
   };
 
   return (
