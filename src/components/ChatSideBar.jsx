@@ -73,7 +73,7 @@ const ChatSideBar = () => {
     <>
       <Wrapper>
         <Title onClick={goMain}>GoldenGlobe</Title>
-        <Country>🇹🇭 태국</Country>
+        <Country>🇫🇷 프랑스</Country>
 
         {data?.map((item) => (
           <PdfBox>

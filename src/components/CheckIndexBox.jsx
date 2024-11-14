@@ -4,12 +4,18 @@ import memo from "../assets/memo.svg";
 import checkPlus from "../assets/checkPlus.svg";
 import { useEffect, useState } from "react";
 import { sendChecklistItem } from "../api/checkListItem";
+import { memoPostApi } from "../api/memoPost";
+import { memoDeleteApi } from "../api/memoDelete";
+import { editMemoApi } from "../api/editMemo";
+import { editItemApi } from "../api/editItem";
 
 const CheckIndexBox = ({ data, id }) => {
   const [checkboxes, setCheckboxes] = useState([]);
   const [memoInput, setMemoInput] = useState([]);
   const [memeContent, setMemoContent] = useState("");
   const [indexInput, setIndexInput] = useState("");
+  const [isEditMemo, setIsEditMemo] = useState(false);
+  const [isEditItem, setIsEditItem] = useState([]);
 
   // data.items가 변경될 때 체크박스 상태 초기화
   useEffect(() => {
@@ -18,8 +24,15 @@ const CheckIndexBox = ({ data, id }) => {
         id: item.itemId,
         color: "#85B6FF",
         value: item.itemName,
+        isChecked: item.check,
       }));
       setCheckboxes(initialCheckboxes);
+
+      setIsEditItem(data.items.map(() => false));
+    }
+
+    if (data?.memo) {
+      setIsEditMemo(true);
     }
   }, [data]);
 
@@ -31,11 +44,26 @@ const CheckIndexBox = ({ data, id }) => {
       value: "", // 기본값을 빈 문자열로 설정
     };
     setCheckboxes((prev) => [...prev, newCheckbox]);
+    setIsEditItem((prev) => [...prev, false]);
+  };
+
+  // 메모 post 함수
+  const postMemo = async () => {
+    const res = await memoPostApi(memoInput[0].content, data.groupId);
+    console.log("메모 포스트", res);
+  };
+
+  // 메모 수정 함수
+  const putMemo = async () => {
+    const res = await editMemoApi(data.groupId, memoInput[0].content);
+
+    console.log("메모수정", res);
   };
 
   // memo 버튼 클릭 시 메모 추가 함수
   const addMemo = () => {
     setMemoInput((prev) => [...prev, { isSmall: false, content: "" }]);
+    setIsEditMemo(true);
   };
 
   // 메모 크기 변경 함수
@@ -45,6 +73,17 @@ const CheckIndexBox = ({ data, id }) => {
         i === index ? { ...memo, isSmall: !memo.isSmall } : memo
       )
     );
+  };
+
+  // 메모 삭제 api
+  const deleteMemoApi = async () => {
+    const res = await memoDeleteApi(data.memoId);
+    console.log("삭제 api", res);
+  };
+
+  // 메모 삭제 함수
+  const onClickMemoDelete = () => {
+    deleteMemoApi();
   };
 
   // 페이지가 로드될 때 API로 받아온 데이터를 상태에 저장하여 메모 표시
@@ -61,7 +100,14 @@ const CheckIndexBox = ({ data, id }) => {
     console.log(res);
   };
 
-  const onChangeIndex = (e, id) => {
+  // item 수정함수
+  const putItem = async (item_id, item_name) => {
+    const res = await editItemApi(item_id, item_name);
+
+    console.log("아이템 수정", res);
+  };
+
+  const onChangeIndex = (e, id, index) => {
     // 체크박스의 id를 사용하여 해당 체크박스의 값을 업데이트
     setCheckboxes((prev) =>
       prev.map((checkbox) =>
@@ -70,6 +116,7 @@ const CheckIndexBox = ({ data, id }) => {
     );
 
     setIndexInput(e.target.value);
+    setIsEditItem((prev) => prev.map((item, i) => (i === index ? true : item)));
   };
 
   // 엔터 눌렀을 때
@@ -84,17 +131,36 @@ const CheckIndexBox = ({ data, id }) => {
     postItem();
   };
 
+  const editItemhandleBlur = (itemId, contents) => {
+    putItem(itemId, contents);
+  };
+
+  // 입력창이 포커스를 잃었을 때 그룹 추가
+  const memohandleBlur = () => {
+    postMemo();
+  };
+
+  const editMemohandleBlur = () => {
+    putMemo();
+  };
+
   return (
     <ListBox>
       <div>
         <Checks>
-          {checkboxes?.map((checkbox) => (
+          {checkboxes?.map((checkbox, idx) => (
             <Checkbox
               key={checkbox.id}
               color={checkbox.color}
+              isCheckedProps={checkbox.isChecked}
+              id={Number(checkbox.id)}
               value={checkbox ? checkbox.value : indexInput}
-              onChange={(e) => onChangeIndex(e, checkbox.id)}
-              onBlur={handleBlur}
+              onChange={(e) => onChangeIndex(e, checkbox.id, idx)}
+              onBlur={() =>
+                isEditItem[idx]
+                  ? editItemhandleBlur(checkbox.id, indexInput)
+                  : handleBlur()
+              }
             />
           ))}
         </Checks>
@@ -107,6 +173,7 @@ const CheckIndexBox = ({ data, id }) => {
                 <MemoWrp key={index}>
                   <Memo
                     value={memo.content}
+                    onBlur={isEditMemo ? editMemohandleBlur : memohandleBlur}
                     onChange={(e) => {
                       const newContent = e.target.value;
                       setMemoInput((prev) =>
@@ -116,7 +183,10 @@ const CheckIndexBox = ({ data, id }) => {
                       );
                     }}
                   />
-                  <Text onClick={() => toggleMemoSize(index)}>접기</Text>
+                  <TextWrp>
+                    <Text onClick={() => onClickMemoDelete()}>삭제</Text>
+                    <Text onClick={() => toggleMemoSize(index)}>접기</Text>
+                  </TextWrp>
                 </MemoWrp>
               )
             )}
@@ -247,4 +317,10 @@ const Text = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+`;
+
+const TextWrp = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding-left: 1rem;
 `;

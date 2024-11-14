@@ -91,7 +91,7 @@ const ListSideBar = ({ id, data }) => {
     <>
       <Wrapper>
         <Title onClick={goMain}>GoldenGlobe</Title>
-        <Country>🇹🇭 태국</Country>
+        <Country>🇫🇷 프랑스</Country>
         <UserWrp>
           {suser?.map((item) => (
             <Suser>
