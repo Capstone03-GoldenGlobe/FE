@@ -6,25 +6,57 @@ import profileGreen from "../assets/profileGreen.svg";
 import plusUser from "../assets/plusUser.svg";
 import plus from "../assets/plus.svg";
 import Modal from "./Modal";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { sendChecklistGroup } from "../api/sendCheckListGroup";
 import { getCheckListAll } from "../api/checkList";
 import { sharedUser } from "../api/sharedUser";
+import dots from "../assets/dots.svg";
+import { DeleteGroupApi } from "../api/deletGroup";
 
-const ListSideBar = ({ id, data }) => {
+const ListSideBar = ({ id, data, height }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [groupName, setGroupName] = useState("");
   const [isClicked, setIsClicked] = useState(false);
   const [group, setGroup] = useState([]);
   const [suser, setSuser] = useState([]);
+  const [dropdown, setDropdown] = useState([]);
   const navigate = useNavigate();
+  const [heiProps, setHeiProps] = useState([]);
 
   // 항목 Get
   const getGroup = async () => {
     const groupResponse = await getCheckListAll(id);
     setGroup(groupResponse?.data.groups);
   };
+
+  // console.log("높이 props", height);
+
+  // console.log("체크리스트 데이터", data);
+  // console.log("체크리스트 group", group);
+
+  // 항목 삭제
+  const deleteGroup = async (group_id) => {
+    const res = await DeleteGroupApi(group_id);
+    console.log("그룹 삭제", res);
+
+    if (res.status === 200) {
+      await getGroup();
+
+      window.location.reload(); // 페이지 새로고침
+    }
+  };
+
+  useEffect(() => {
+    console.log("목록 업데이트");
+  }, [group]);
+
+  useEffect(() => {
+    // Only update if height actually changed
+    if (JSON.stringify(height) !== JSON.stringify(heiProps)) {
+      setHeiProps(height);
+    }
+  }, [height]);
 
   useEffect(() => {
     const fetchSharedUser = async () => {
@@ -87,11 +119,35 @@ const ListSideBar = ({ id, data }) => {
     navigate("/");
   };
 
+  useEffect(() => {
+    // 화면 외부 클릭 감지
+    const handleClickOutside = (event) => {
+      if (!dropdownRefs.current.some((ref) => ref?.contains(event.target))) {
+        setDropdown([]); // 모든 드롭다운 닫기
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const dropdownRefs = useRef([]); // 각 DotBox의 ref를 저장
+
+  const toggleDropdown = (index) => {
+    setDropdown((prev) => {
+      const newDropdowns = [...prev];
+      newDropdowns[index] = !newDropdowns[index]; // 현재 인덱스 상태 토글
+      return newDropdowns;
+    });
+  };
+
   return (
     <>
       <Wrapper>
         <Title onClick={goMain}>GoldenGlobe</Title>
-        <Country>🇫🇷 프랑스</Country>
+        {/* <Country>🇫🇷 프랑스</Country> */}
         <UserWrp>
           {suser?.map((item) => (
             <Suser>
@@ -126,7 +182,26 @@ const ListSideBar = ({ id, data }) => {
 
         {/* 그룹 목록 렌더링 */}
         {(data?.length ? data : group)?.map((item, index) => (
-          <Index key={index}>{item?.groupName}</Index>
+          <GrpWrp heightProps={heiProps[index]}>
+            <Index key={index}>{item?.groupName}</Index>
+            <Dots src={dots} onClick={() => toggleDropdown(index)} />
+            {dropdown[index] && ( // 현재 드롭다운이 열려 있으면 렌더링
+              <>
+                <DotBox
+                  ref={(el) => (dropdownRefs.current[index] = el)}
+                  onClick={() => deleteGroup(item.groupId)}
+                >
+                  삭제하기
+                </DotBox>
+                {/* <DotBox2
+                  ref={(el) => (dropdownRefs.current[index] = el)}
+                  onClick={() => deleteGroup(item.groupId)}
+                >
+                  수정하기
+                </DotBox2> */}
+              </>
+            )}
+          </GrpWrp>
         ))}
 
         {/* 그룹 입력창 */}
@@ -183,7 +258,9 @@ const Wrapper = styled.div`
   padding-bottom: 3rem;
 
   max-height: 100vh; /* 최대 높이를 뷰포트의 높이로 설정 */
-  overflow-y: auto; /* 수직 스크롤바를 활성화 */
+  overflow-y: auto;
+  overflow: visible;
+  /* 수직 스크롤바를 활성화 */
 `;
 const Title = styled.div`
   color: #fff;
@@ -213,6 +290,7 @@ const UserWrp = styled.div`
   flex-direction: row;
   justify-content: space-around;
   margin-top: 1rem;
+  margin-bottom: 20px;
 `;
 
 const Index = styled.div`
@@ -224,7 +302,8 @@ const Index = styled.div`
   font-weight: 600;
   line-height: normal;
 
-  margin-top: 2.1rem;
+  box-sizing: border-box;
+  position: fixed;
 `;
 
 const GrpInput = styled.input`
@@ -256,4 +335,83 @@ const Suser = styled.div`
 
 const SuserName = styled.div`
   text-align: center;
+`;
+
+const Dots = styled.img`
+  margin-bottom: 0px;
+  margin-left: 9rem;
+  cursor: pointer;
+`;
+
+const GrpWrp = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: visible;
+  height: ${(props) => Number(props.heightProps)}px;
+`;
+
+export const DotBox = styled.div`
+  border-radius: 12px 12px 0 0;
+  background: var(--White, #fff);
+  /* background-color: green; */
+  color: var(--Black, #000);
+  text-align: center;
+  width: 90px;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+
+  /* Button 14SB */
+  font-family: var(--korean);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px; /* 171.429% */
+  z-index: 1000;
+  position: absolute;
+  right: 0;
+  margin-right: 10px;
+
+  left: 10.5rem;
+
+  cursor: pointer;
+`;
+export const DotBox2 = styled.div`
+  border-radius: 0 0 12px 12px;
+  background: var(--White, #fff);
+  /* background-color: green; */
+  color: var(--Black, #000);
+  text-align: center;
+  width: 90px;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  border-top: 1px solid #e1e1e1;
+
+  /* Button 14SB */
+  font-family: var(--korean);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px; /* 171.429% */
+  z-index: 1000;
+  position: absolute;
+  top: 45px;
+  right: 0;
+  margin-right: 10px;
+
+  left: 10.5rem;
+  top: -0.2rem;
+  margin-top: 40px;
+
+  cursor: pointer;
 `;

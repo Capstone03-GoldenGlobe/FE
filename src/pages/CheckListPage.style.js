@@ -75,6 +75,7 @@ export const Weather = styled.div`
   background-color: white;
   text-align: start;
   border-bottom: 1px solid #d3d3d3;
+  border-top: 1px solid #d3d3d3;
 `;
 
 // export const ListBox = styled.div`

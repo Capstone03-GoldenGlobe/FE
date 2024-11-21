@@ -2,20 +2,34 @@ import Checkbox from "./Checkbox";
 import styled from "styled-components";
 import memo from "../assets/memo.svg";
 import checkPlus from "../assets/checkPlus.svg";
-import { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { sendChecklistItem } from "../api/checkListItem";
 import { memoPostApi } from "../api/memoPost";
 import { memoDeleteApi } from "../api/memoDelete";
 import { editMemoApi } from "../api/editMemo";
 import { editItemApi } from "../api/editItem";
+import { DeleteItemApi } from "../api/deleteItem";
+import { getCheckListAll } from "../api/checkList";
 
-const CheckIndexBox = ({ data, id }) => {
+const CheckIndexBox = ({ data, id, setGroupHeight }) => {
   const [checkboxes, setCheckboxes] = useState([]);
   const [memoInput, setMemoInput] = useState([]);
   const [memeContent, setMemoContent] = useState("");
   const [indexInput, setIndexInput] = useState("");
   const [isEditMemo, setIsEditMemo] = useState(false);
   const [isEditItem, setIsEditItem] = useState([]);
+  const [fetchData, setFetchData] = useState([]);
+
+  // 높이 설정
+  const boxRef = useRef(null);
+
+  // 높이 설정
+  useEffect(() => {
+    if (boxRef.current) {
+      const height = boxRef.current.offsetHeight; // 높이 계산
+      setGroupHeight(height); // 부모 컴포넌트로 높이 전달
+    }
+  }, [setGroupHeight]); // data나 setGroupHeight가 변경될 때마다 실행
 
   // data.items가 변경될 때 체크박스 상태 초기화
   useEffect(() => {
@@ -36,12 +50,34 @@ const CheckIndexBox = ({ data, id }) => {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (fetchData && Array.isArray(fetchData[id])) {
+      const updatedCheckboxes = fetchData[id].map((item) => ({
+        id: item.itemId,
+        color: "#85B6FF",
+        value: item.itemName,
+        isChecked: item.check || false,
+      }));
+      setCheckboxes(updatedCheckboxes);
+      setIsEditItem(fetchData[id].map(() => false)); // 초기 isEditItem 상태 설정
+    }
+  }, [fetchData, id]);
+
+  const getData = async () => {
+    const res = await getCheckListAll(id);
+    console.log("getData", res);
+    setFetchData(res?.data.groups);
+  };
+
+  // console.log(memoInput);
+
   // checkPlus 버튼 클릭 시 체크박스를 추가하는 함수
   const addCheckbox = () => {
     const newCheckbox = {
       id: checkboxes.length > 0 ? checkboxes[checkboxes.length - 1].id + 1 : 1, // 고유 ID 생성
       color: "#85B6FF",
       value: "", // 기본값을 빈 문자열로 설정
+      isNew: true,
     };
     setCheckboxes((prev) => [...prev, newCheckbox]);
     setIsEditItem((prev) => [...prev, false]);
@@ -49,13 +85,13 @@ const CheckIndexBox = ({ data, id }) => {
 
   // 메모 post 함수
   const postMemo = async () => {
-    const res = await memoPostApi(memoInput[0].content, data.groupId);
+    const res = await memoPostApi(memoInput[0]?.content, data?.groupId);
     console.log("메모 포스트", res);
   };
 
   // 메모 수정 함수
   const putMemo = async () => {
-    const res = await editMemoApi(data.groupId, memoInput[0].content);
+    const res = await editMemoApi(data?.groupId, memoInput[0]?.content);
 
     console.log("메모수정", res);
   };
@@ -63,7 +99,6 @@ const CheckIndexBox = ({ data, id }) => {
   // memo 버튼 클릭 시 메모 추가 함수
   const addMemo = () => {
     setMemoInput((prev) => [...prev, { isSmall: false, content: "" }]);
-    setIsEditMemo(true);
   };
 
   // 메모 크기 변경 함수
@@ -76,15 +111,24 @@ const CheckIndexBox = ({ data, id }) => {
   };
 
   // 메모 삭제 api
-  const deleteMemoApi = async () => {
-    const res = await memoDeleteApi(data.memoId);
+  const deleteMemo = async (memoId) => {
+    const res = await memoDeleteApi(memoId);
     console.log("삭제 api", res);
   };
 
   // 메모 삭제 함수
   const onClickMemoDelete = () => {
-    deleteMemoApi();
+    console.log(data?.memoId);
+    deleteMemo(data?.memoId);
+
+    // 메모 삭제 후, UI 상태를 업데이트하여 바로 변경사항이 반영되도록 설정
+    setMemoInput([]);
+
+    // 메모 edit도 false로 바꿔줘야함
+    setIsEditMemo(false);
   };
+
+  // console.log("data", data);
 
   // 페이지가 로드될 때 API로 받아온 데이터를 상태에 저장하여 메모 표시
   useEffect(() => {
@@ -95,9 +139,20 @@ const CheckIndexBox = ({ data, id }) => {
 
   // item post 함수
   const postItem = async () => {
-    const res = await sendChecklistItem(id, data.groupId, indexInput);
+    try {
+      const res = await sendChecklistItem(id, data.groupId, indexInput);
+      console.log("POST 아이템 결과:", res);
 
-    console.log(res);
+      // const newItem = {
+      //   id: res.data.itemId, // 서버에서 받은 ID
+      //   color: "#85B6FF",
+      //   value: indexInput,
+      //   isChecked: false,
+      // };
+      // setCheckboxes((prev) => [...prev, newItem]); // 새로운 항목 추가
+    } catch (error) {
+      console.error("POST 실패:", error);
+    }
   };
 
   // item 수정함수
@@ -116,8 +171,31 @@ const CheckIndexBox = ({ data, id }) => {
     );
 
     setIndexInput(e.target.value);
-    setIsEditItem((prev) => prev.map((item, i) => (i === index ? true : item)));
+    setIsEditItem((prev) =>
+      prev.map((item, i) =>
+        i === index && checkboxes[index].value ? true : item
+      )
+    );
   };
+
+  // // 아이템 삭제 함수
+  // const deleteItem = async (itemId) => {
+  //   try {
+  //     await DeleteItemApi(itemId);
+  //     console.log("삭제 성공:", itemId);
+
+  //     setCheckboxes((prev) =>
+  //       prev.filter((checkbox) => checkbox.id !== itemId)
+  //     ); // 상태에서 제거
+  //   } catch (error) {
+  //     console.error("삭제 실패:", error);
+  //   }
+  // };
+
+  // // 아이템 삭제 핸들러
+  // const handleDeleteItem = (itemId) => {
+  //   setFetchData((prevItems) => prevItems.filter((item) => item.id !== itemId));
+  // };
 
   // 엔터 눌렀을 때
   // const handleKeyPress = async (e) => {
@@ -126,26 +204,50 @@ const CheckIndexBox = ({ data, id }) => {
   //   }
   // };
 
-  // 입력창이 포커스를 잃었을 때 그룹 추가
-  const handleBlur = () => {
-    postItem();
+  // // 입력창이 포커스를 잃었을 때 그룹 추가
+  // const handleBlur = (idx) => {
+  //   postItem();
+  //   // 새 항목 추가 후 해당 인덱스의 isEditItem 값을 다시 false로 설정
+  //   setIsEditItem((prev) => prev.map((item, i) => (i === idx ? false : item)));
+  // };
+
+  // 입력창이 포커스를 잃었을 때 항목 추가
+  const handleBlur = (idx) => {
+    const checkbox = checkboxes[idx];
+    if (checkbox.isNew) {
+      // 새로운 아이템일 경우 post 호출
+      postItem();
+      // 새 항목 추가 후 해당 인덱스의 isEditItem 값을 다시 false로 설정하고 isNew를 false로 변경
+      setCheckboxes((prev) =>
+        prev.map((item, i) => (i === idx ? { ...item, isNew: false } : item))
+      );
+    }
+    setIsEditItem((prev) => prev.map((item, i) => (i === idx ? false : item)));
   };
 
-  const editItemhandleBlur = (itemId, contents) => {
+  // isEdit == true이고 inputValue의 length가 0이면 삭제
+  // const editItemhandleBlur = (itemId, contents) => {
+  //   if (!contents) {
+  //     deleteItem(itemId);
+  //   } else putItem(itemId, contents);
+  // };
+
+  // 아이템 수정 시 onBlur
+  const editItemhandleBlur = (itemId, contents, idx) => {
     putItem(itemId, contents);
+    setIsEditItem((prev) => prev.map((item, i) => (i === idx ? false : item)));
   };
 
   // 입력창이 포커스를 잃었을 때 그룹 추가
   const memohandleBlur = () => {
     postMemo();
   };
-
   const editMemohandleBlur = () => {
     putMemo();
   };
 
   return (
-    <ListBox>
+    <ListBox ref={boxRef}>
       <div>
         <Checks>
           {checkboxes?.map((checkbox, idx) => (
@@ -155,11 +257,14 @@ const CheckIndexBox = ({ data, id }) => {
               isCheckedProps={checkbox.isChecked}
               id={Number(checkbox.id)}
               value={checkbox ? checkbox.value : indexInput}
-              onChange={(e) => onChangeIndex(e, checkbox.id, idx)}
+              // onDelete={deleteItem}
+              onChange={(e) => {
+                onChangeIndex(e, checkbox.id, idx);
+              }}
               onBlur={() =>
-                isEditItem[idx]
-                  ? editItemhandleBlur(checkbox.id, indexInput)
-                  : handleBlur()
+                isEditItem[idx] && !checkboxes[idx].isNew
+                  ? editItemhandleBlur(checkbox.id, indexInput, idx)
+                  : handleBlur(idx)
               }
             />
           ))}
@@ -217,12 +322,12 @@ const CheckIndexBox = ({ data, id }) => {
 
 export default CheckIndexBox;
 
-// styled components (변경 없음)
 const ListBox = styled.div`
   height: auto;
   box-sizing: border-box;
   padding: 1.5rem 3rem;
-  background-color: white;
+  /* background-color: white; */
+  background-color: none;
   text-align: start;
   border-bottom: 1px solid #d3d3d3;
   position: relative;
@@ -230,6 +335,8 @@ const ListBox = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  z-index: 10;
+  overflow: visible;
 `;
 
 const Emoji = styled.div`
