@@ -2,6 +2,8 @@ import styled from "styled-components";
 import check from "../assets/check.svg";
 import { useEffect, useState } from "react";
 import { isMemoCheckedApi } from "../api/isCheck";
+import x from "../assets/cross.svg";
+import { DeleteItemApi } from "../api/deleteItem";
 
 const Checkbox = ({
   color,
@@ -31,6 +33,19 @@ const Checkbox = ({
     setIsChecked(res?.data.data.ischecked);
   };
 
+  // 아이템 삭제 함수
+  const deleteItem = async (itemId) => {
+    const res = await DeleteItemApi(itemId);
+
+    console.log("아이템 삭제", res);
+    // 삭제 후 새로고침
+    window.location.reload();
+    // if (res?.data.status === 200) {
+    //   onDelete(itemId); // 삭제 성공 시 부모 상태 업데이트
+    //   console.log("삭제성공");
+    // }
+  };
+
   return (
     <>
       <Wrp>
@@ -42,6 +57,11 @@ const Checkbox = ({
           onChange={onChange}
           onKeyPress={onKeyPress}
           onBlur={onBlur}
+        />
+        <img
+          src={x}
+          style={{ cursor: "pointer" }}
+          onClick={() => deleteItem(id)}
         />
       </Wrp>
     </>
