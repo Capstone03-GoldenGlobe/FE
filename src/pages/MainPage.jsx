@@ -8,6 +8,7 @@ import { mainPage } from "../api/main";
 import AddNewModal from "../components/AddNewModal";
 import trashcan from "../assets/trashcan.svg";
 import { deleteTravel } from "../api/deleteTravel";
+import x from "../assets/cross.svg";
 
 const MainPage = () => {
   const [contents, setContents] = useState(false);
@@ -17,6 +18,59 @@ const MainPage = () => {
   const prevDataRef = useRef(); // 이전 데이터 추적
 
   const navigate = useNavigate();
+
+  const nationality = {
+    과테말라: "🇬🇹",
+    네덜란드: "🇳🇱",
+    노르웨이: "🇳🇴",
+    뉴질랜드: "🇳🇿",
+    대만: "🇹🇼",
+    대한민국: "🇰🇷",
+    덴마크: "🇩🇰",
+    독일: "🇩🇪",
+    라투아니아: "🇱🇹",
+    러시아: "🇷🇺",
+    루마니아: "🇷🇴",
+    말레이시아: "🇲🇾",
+    멕시코: "🇲🇽",
+    미국: "🇺🇸",
+    방글라데시: "🇧🇩",
+    베트남: "🇻🇳",
+    벨기에: "🇧🇪",
+    브라질: "🇧🇷",
+    브루나이: "🇧🇳",
+    사우디아라비아: "🇸🇦",
+    수단: "🇸🇩",
+    스웨덴: "🇸🇪",
+    스위스: "🇨🇭",
+    스페인: "🇪🇸",
+    싱가포르: "🇸🇬",
+    아랍에미리트: "🇦🇪",
+    아이슬란드: "🇮🇸",
+    아일랜드: "🇮🇪",
+    영국: "🇬🇧",
+    오스트리아: "🇦🇹",
+    이탈리아: "🇮🇹",
+    인도: "🇮🇳",
+    인도네시아: "🇮🇩",
+    일본: "🇯🇵",
+    자메이카: " 🇯🇲",
+    중국: "🇨🇳",
+    카자흐스탄: "🇰🇿",
+    캄보디아: "🇰🇭",
+    캐나다: "🇨🇦",
+    태국: "🇹🇭",
+    터키: "🇹🇷",
+    튀르키예: "🇹🇷",
+    파라과이: "🇵🇾",
+    파키스탄: "🇵🇰",
+    폴란드: "🇵🇱",
+    프랑스: "🇫🇷",
+    핀란드: "🇫🇮",
+    필리핀: "🇵🇭",
+    호주: "🇦🇺",
+    홍콩: "🇭🇰",
+  };
 
   // 메인페이지 api get
   const getData = async () => {
@@ -55,8 +109,8 @@ const MainPage = () => {
     getData();
   };
 
-  const goChat = (id) => {
-    navigate(`/chat/${id}`);
+  const goChat = (id, country) => {
+    navigate(`/chat/${id}`, { state: { country } });
   };
 
   const onClickAddNew = () => {
@@ -72,74 +126,69 @@ const MainPage = () => {
     getData();
   };
 
+  // 국기 추가
+  const getFlagByCountry = (countryName) => {
+    return nationality[countryName] || "🏳️"; // 기본값으로 "🏳️" (국기 없음) 설정
+  };
+
   return (
     <>
       <SideBar data={data?.nickname} />
-      {contents ? (
-        <>
-          <S.ContentsWrapper>
-            <S.CTitle>내 여행 모아보기</S.CTitle>
 
-            <S.Container>
-              {data?.travelLists.map((item) => (
-                <S.Content key={item.destId}>
-                  <S.Twrp onClick={() => TravelDelete(item.destId)}>
-                    <img src={trashcan} />
-                  </S.Twrp>
-                  <S.FlagText onClick={() => goChat(item.destId)}>
-                    <S.Flag>🇹🇭</S.Flag>
+      <S.ContentsWrapper>
+        <S.CTitle>내 여행 모아보기</S.CTitle>
 
-                    <S.CountryWrapper>
-                      <S.Country>{item?.country}</S.Country>
-                      <S.City>{item?.city}</S.City>
-                    </S.CountryWrapper>
-                  </S.FlagText>
+        <S.Container>
+          {data?.travelLists.map((item) => (
+            <S.Content key={item.destId}>
+              <S.Twrp onClick={() => TravelDelete(item.destId)}>
+                <img src={trashcan} />
+              </S.Twrp>
+              <S.FlagText onClick={() => goChat(item.destId, item?.country)}>
+                <S.Flag>{getFlagByCountry(item?.country)}</S.Flag>
 
-                  <S.Date>
-                    {item.startDate}~{item.endDate}
-                  </S.Date>
-                </S.Content>
-              ))}
+                <S.CountryWrapper>
+                  <S.Country>{item?.country}</S.Country>
+                  <S.City>{item?.city}</S.City>
+                </S.CountryWrapper>
+              </S.FlagText>
 
-              <S.ContentEnd onClick={onClickAddNew}>
-                <S.Add>
-                  새로운 여행을 <br />
-                  추가하세요!
-                </S.Add>
-                <AddNewModal isOpen={isModalOpen} onClose={closeModal}>
-                  <AddNewTrip />
-                </AddNewModal>
-              </S.ContentEnd>
-            </S.Container>
-            <S.Line />
-            <S.CTitle>공유 여행 모아보기</S.CTitle>
-            <S.Container>
-              {data?.shared.map((item) => (
-                <S.Content
-                  onClick={() => goChat(item.destId)}
-                  key={item.destId}
-                >
-                  <S.FlagText>
-                    <S.Flag>🇹🇭</S.Flag>
-                    <S.CountryWrapper>
-                      <S.Country>{item?.country}</S.Country>
-                      <S.City>{item?.city}</S.City>
-                    </S.CountryWrapper>
-                  </S.FlagText>
+              <S.Date>
+                {item.startDate}~{item.endDate}
+              </S.Date>
+            </S.Content>
+          ))}
 
-                  <S.Date>
-                    {item.startDate}-{item.endDate}
-                  </S.Date>
-                </S.Content>
-              ))}
-            </S.Container>
-          </S.ContentsWrapper>
-        </>
-      ) : (
-        <>
-          <AddNewTrip />
-        </>
-      )}
+          <S.ContentEnd onClick={onClickAddNew}>
+            <S.Add>
+              새로운 여행을 <br />
+              추가하세요!
+            </S.Add>
+            <AddNewModal isOpen={isModalOpen} onClose={closeModal}>
+              <AddNewTrip />
+            </AddNewModal>
+          </S.ContentEnd>
+        </S.Container>
+        <S.Line />
+        <S.CTitle>공유 여행 모아보기</S.CTitle>
+        <S.Container>
+          {data?.shared.map((item) => (
+            <S.Content onClick={() => goChat(item.destId)} key={item.destId}>
+              <S.FlagText>
+                <S.Flag>{getFlagByCountry(item?.country)}</S.Flag>
+                <S.CountryWrapper>
+                  <S.Country>{item?.country}</S.Country>
+                  <S.City>{item?.city}</S.City>
+                </S.CountryWrapper>
+              </S.FlagText>
+
+              <S.Date>
+                {item.startDate}-{item.endDate}
+              </S.Date>
+            </S.Content>
+          ))}
+        </S.Container>
+      </S.ContentsWrapper>
     </>
   );
 };

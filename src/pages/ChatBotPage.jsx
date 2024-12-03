@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import ChatSideBar from "../components/ChatSideBar";
 import * as S from "./ChatBotPage.style";
 import sendArrow from "../assets/sendArrow.svg";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Flex, Spin } from "antd";
 import { getChatlog } from "../api/getChatlog";
@@ -19,6 +19,8 @@ const ChatBotPage = () => {
   const [question, setQuestion] = useState("");
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const { country } = location.state || {};
 
   const goCheckList = () => {
     navigate(`/list/${id}`);
@@ -63,7 +65,7 @@ const ChatBotPage = () => {
 
   return (
     <div style={{ backgroundColor: "#f5f5f5" }}>
-      <ChatSideBar />
+      <ChatSideBar country={country} />
       <S.Container>
         <S.IndexContainer>
           <S.Index isChat={isChat}>챗봇</S.Index>

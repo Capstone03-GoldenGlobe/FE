@@ -2,12 +2,12 @@ import styled from "styled-components";
 import pdf from "../assets/pdf.svg";
 import trash from "../assets/trash.svg";
 import plus from "../assets/plus.svg";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PostPDF2 } from "../api/postPDF2";
 import { getPDFname } from "../api/getPDFname";
 
-const ChatSideBar = () => {
+const ChatSideBar = ({ country }) => {
   const navigate = useNavigate();
   // 파일 선택창을 열기 위한 참조값
   const fileInputRef = useRef(null);
@@ -16,6 +16,64 @@ const ChatSideBar = () => {
 
   const [fileName, setFile] = useState("");
   const [data, setData] = useState();
+
+  const nationality = {
+    과테말라: "🇬🇹",
+    네덜란드: "🇳🇱",
+    노르웨이: "🇳🇴",
+    뉴질랜드: "🇳🇿",
+    대만: "🇹🇼",
+    대한민국: "🇰🇷",
+    덴마크: "🇩🇰",
+    독일: "🇩🇪",
+    라투아니아: "🇱🇹",
+    러시아: "🇷🇺",
+    루마니아: "🇷🇴",
+    말레이시아: "🇲🇾",
+    멕시코: "🇲🇽",
+    미국: "🇺🇸",
+    방글라데시: "🇧🇩",
+    베트남: "🇻🇳",
+    벨기에: "🇧🇪",
+    브라질: "🇧🇷",
+    브루나이: "🇧🇳",
+    사우디아라비아: "🇸🇦",
+    수단: "🇸🇩",
+    스웨덴: "🇸🇪",
+    스위스: "🇨🇭",
+    스페인: "🇪🇸",
+    싱가포르: "🇸🇬",
+    아랍에미리트: "🇦🇪",
+    아이슬란드: "🇮🇸",
+    아일랜드: "🇮🇪",
+    영국: "🇬🇧",
+    오스트리아: "🇦🇹",
+    이탈리아: "🇮🇹",
+    인도: "🇮🇳",
+    인도네시아: "🇮🇩",
+    일본: "🇯🇵",
+    자메이카: " 🇯🇲",
+    중국: "🇨🇳",
+    카자흐스탄: "🇰🇿",
+    캄보디아: "🇰🇭",
+    캐나다: "🇨🇦",
+    태국: "🇹🇭",
+    터키: "🇹🇷",
+    튀르키예: "🇹🇷",
+    파라과이: "🇵🇾",
+    파키스탄: "🇵🇰",
+    폴란드: "🇵🇱",
+    프랑스: "🇫🇷",
+    핀란드: "🇫🇮",
+    필리핀: "🇵🇭",
+    호주: "🇦🇺",
+    홍콩: "🇭🇰",
+  };
+
+  // 국기 추가
+  const getFlagByCountry = (countryName) => {
+    return nationality[countryName] || "🏳️"; // 기본값으로 "🏳️" (국기 없음) 설정
+  };
 
   // api에 post 보내기
   const postPdf = async (id, fileName) => {
@@ -73,7 +131,9 @@ const ChatSideBar = () => {
     <>
       <Wrapper>
         <Title onClick={goMain}>GoldenGlobe</Title>
-        <Country>🇫🇷 프랑스</Country>
+        <Country>
+          {getFlagByCountry(country)} {country}
+        </Country>
 
         {data?.map((item) => (
           <PdfBox>
