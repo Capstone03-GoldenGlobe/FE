@@ -4,6 +4,7 @@ import * as S from "./CheckListPage.style";
 import CheckIndexBox from "../components/CheckIndexBox";
 import { getCheckListAll } from "../api/checkList";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { getWeather } from "../api/getWeather";
 
 const CheckListPage = () => {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ const CheckListPage = () => {
   const [data, setData] = useState([]);
   const [groupHeight, setGroupHeight] = useState([]); // 공유 상태: 사이드바 높이
   const groupHeightsRef = useRef([]);
+  const [temp, setTemp] = useState();
 
   const { id } = useParams();
 
@@ -26,9 +28,17 @@ const CheckListPage = () => {
     };
 
     getData();
+    weatherApi();
   }, [id]);
 
   console.log("res.data.groups", data);
+
+  const weatherApi = async () => {
+    const res = await getWeather(id);
+    setTemp(res);
+
+    console.log("날씨 api", res);
+  };
 
   // 그룹 높이 업데이트 함수 (useCallback)
   const updateGroupHeight = useCallback((index, height) => {
@@ -66,7 +76,9 @@ const CheckListPage = () => {
             <S.Index>체크리스트</S.Index>
           </S.IndexContainer>
 
-          <S.Weather>🇫🇷 프랑스 파리의 현재 기온: 32℃</S.Weather>
+          <S.Weather>
+            {temp?.message}: {temp?.data}℃
+          </S.Weather>
           {data?.map((list, index) => (
             <CheckIndexBox
               key={list.groupId}
