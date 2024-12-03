@@ -3,6 +3,7 @@ import Button from "./Botton";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { AddNew } from "../api/addNew";
+import AlertModal from "./AlertModal";
 
 const AddNewTrip = ({ onClose }) => {
   const navigate = useNavigate();
@@ -10,15 +11,20 @@ const AddNewTrip = ({ onClose }) => {
   const [city, setCity] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onClickAddTrip = async () => {
     try {
       const res = await AddNew(country, city, startDate, endDate);
       console.log(res);
       // 요청 완료 후 모달 닫기
-      onClose();
 
-      navigate("/");
+      if (res?.status === 200) {
+        onClose();
+        navigate("/");
+      } else {
+        setIsModalOpen(true);
+      }
     } catch (err) {
       console.log(err);
       alert(err);
@@ -61,13 +67,13 @@ const AddNewTrip = ({ onClose }) => {
         <SmallTitle>여행 일정</SmallTitle>
         <DateWrp>
           <SmallInput
-            placeholder="2024.12.25"
+            placeholder="2026-01-12"
             value={startDate}
             onChange={onChangeStartDate}
           />
           ~
           <SmallInput
-            placeholder="2024.12.30"
+            placeholder="2026-01-15"
             value={endDate}
             onChange={onChangeEndDate}
           />
@@ -76,6 +82,23 @@ const AddNewTrip = ({ onClose }) => {
         <BtnWrapper>
           <Button children={"생성하기"} type="L" onClick={onClickAddTrip} />
         </BtnWrapper>
+
+        <AlertModal
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+          }}
+          guideText="입력하신 정보를 확인해주세요!"
+          confirmText="확인"
+          onConfirm={() => {
+            setIsModalOpen(false);
+          }}
+          onCancel={() => {
+            setIsModalOpen(false);
+          }}
+          isSingleButton={true}
+          showTextInput={false}
+        />
       </Box>
     </Wrapper>
   );

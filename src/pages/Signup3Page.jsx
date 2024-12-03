@@ -7,15 +7,17 @@ import InputBox from "../components/InputBox";
 import info from "../assets/info.svg";
 import { useState } from "react";
 import { SignupApi } from "../api/signup";
+import AlertModal from "../components/AlertModal";
 
 const Signup3Page = () => {
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const goNext = async () => {
     try {
       await Signup();
       console.log("회원가입 성공");
-      navigate("/login");
+      setIsModalOpen(true);
     } catch (err) {
       console.log(err);
     }
@@ -138,9 +140,27 @@ const Signup3Page = () => {
           </Button>
           <div style={{ marginRight: "2.2rem" }} />
           <Button type="L" color="o" onClick={goNext}>
-            다음
+            회원가입
           </Button>
         </S.BtnWrapper>
+
+        <AlertModal
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+          }}
+          guideText="회원가입에 성공했습니다!"
+          confirmText="확인"
+          onConfirm={() => {
+            setIsModalOpen(false);
+            navigate("/login");
+          }}
+          onCancel={() => {
+            setIsModalOpen(false);
+          }}
+          isSingleButton={true}
+          showTextInput={false}
+        />
       </S.Wrapper>
     </>
   );

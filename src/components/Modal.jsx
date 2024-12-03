@@ -50,6 +50,7 @@ const Modal = ({
                   type="text"
                   value={cellPhone}
                   onChange={onChangeShare}
+                  placeholder="01012345678"
                 />
               </InputWrp>
             </>
