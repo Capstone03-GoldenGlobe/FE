@@ -14,7 +14,7 @@ const FindPwPage = () => {
             이메일을 통해 비밀번호 변경 링크가 전송됩니다.
           </S.Top>
           <S.InputWrp2>
-            <S.Title>이메일</S.Title>
+            <S.Title>전화번호</S.Title>
             <InputBox
               type="text"
               width="22.25rem"
@@ -25,7 +25,7 @@ const FindPwPage = () => {
             </Button>
           </S.InputWrp2>
 
-          <S.Top>아래 이메일로 비밀번호 변경 링크를 전송했습니다.</S.Top>
+          <S.Top>아래 전화번호로 비밀번호 변경 링크를 전송했습니다.</S.Top>
         </div>
       </S.Wrapper>
     </>

@@ -24,7 +24,7 @@ const FindEmail2Page = () => {
 
         <S.Top>인증한 휴대폰 번호로 가입된 계정입니다.</S.Top>
 
-        <S.Box>doto1116@ewhain.net</S.Box>
+        <S.Box>01012345678</S.Box>
 
         <S.BtnWrapper>
           <Button type="L" color="g" onClick={goFindPw}>
