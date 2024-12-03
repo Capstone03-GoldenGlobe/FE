@@ -2,10 +2,13 @@ import SideBar from "../components/SideBar";
 import * as S from "./Mypage.style";
 import profile from "../assets/profile.svg";
 import Button from "../components/Botton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getMypage } from "../api/mypage";
 
 const Mypage = () => {
   const [isEdit, setIsEdit] = useState(false);
+  const [data, setData] = useState();
+  const [name, setName] = useState();
 
   const onClickIsEdit = () => {
     setIsEdit(true);
@@ -14,14 +17,27 @@ const Mypage = () => {
   const onClickSave = () => {
     setIsEdit(false);
   };
+  useEffect(() => {
+    mypageApi();
+  }, []);
+
+  // mypage api
+  const mypageApi = async () => {
+    const res = await getMypage();
+
+    console.log(res);
+
+    setData(res);
+    setName(res?.name);
+  };
   return (
     <>
-      <SideBar />
+      <SideBar data={data?.nickname} />
 
       <S.Wrapper>
         <S.ProfileWrp>
           <img src={profile} style={{ width: "4.5rem" }} />
-          <S.Welcom>닉네임님 환영합니다!</S.Welcom>
+          <S.Welcom>{data?.nickname}님 환영합니다!</S.Welcom>
         </S.ProfileWrp>
         <S.Line />
         <S.GreyText>회원 정보</S.GreyText>
@@ -29,16 +45,16 @@ const Mypage = () => {
         <S.UserWrp>
           <S.User1>
             <S.UserTitle>이름</S.UserTitle>
-            <S.UserInfo>김근주</S.UserInfo>
+            <S.UserInfo>{data?.name}</S.UserInfo>
           </S.User1>
           <S.User2>
             <S.UserTitle>닉네임</S.UserTitle>
             {isEdit ? (
               <>
-                <S.UserInfoInput />
+                <S.UserInfoInput placeholder={data?.nickname} />
               </>
             ) : (
-              <S.UserInfo>근주근주</S.UserInfo>
+              <S.UserInfo>{data?.nickname}</S.UserInfo>
             )}
           </S.User2>
         </S.UserWrp>
@@ -47,34 +63,34 @@ const Mypage = () => {
         <S.UserWrp>
           <S.User1>
             <S.UserTitle>아이디</S.UserTitle>
-            <S.UserInfo>asdfs</S.UserInfo>
+            <S.UserInfo>{data?.cellphone}</S.UserInfo>
           </S.User1>
           <S.User1>
             <S.UserTitle1>생년월일</S.UserTitle1>
             {isEdit ? (
               <>
-                <S.UserInfoInput />
+                <S.UserInfoInput placeholder={data?.birth} />
               </>
             ) : (
-              <S.UserInfo>1950. 10. 10</S.UserInfo>
+              <S.UserInfo>{data?.birth}</S.UserInfo>
             )}
           </S.User1>
         </S.UserWrp>
 
         <S.Line />
-        <S.GreyText>연락 정보</S.GreyText>
+        {/* <S.GreyText>연락 정보</S.GreyText>
         <S.UserWrp>
           <S.UserCall>
-            <S.UserTitle2>핸드폰</S.UserTitle2>
+            <S.UserTitle2>전화번호</S.UserTitle2>
             {isEdit ? (
               <S.UserInfoInputLong />
             ) : (
               <S.UserInfo2>010-1111-2222</S.UserInfo2>
             )}
           </S.UserCall>
-        </S.UserWrp>
+        </S.UserWrp> */}
 
-        <S.UserWrp>
+        {/* <S.UserWrp>
           <S.UserCall>
             <S.UserTitle2>이메일</S.UserTitle2>
             {isEdit ? (
@@ -83,18 +99,9 @@ const Mypage = () => {
               <S.UserInfo2>skljd@naver.com</S.UserInfo2>
             )}
           </S.UserCall>
-        </S.UserWrp>
+        </S.UserWrp> */}
+        <div style={{ height: "3rem" }} />
 
-        <S.UserWrp>
-          <S.UserCall>
-            <S.UserTitle2>비상 연락망</S.UserTitle2>
-            {isEdit ? (
-              <S.UserInfoInputLong />
-            ) : (
-              <S.UserInfo2>010-1234-1234 (딸)</S.UserInfo2>
-            )}
-          </S.UserCall>
-        </S.UserWrp>
         {isEdit ? (
           <Button type={"L"} onClick={onClickSave}>
             저장하기
