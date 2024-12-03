@@ -141,9 +141,12 @@ const MainPage = () => {
         <S.Container>
           {data?.travelLists.map((item) => (
             <S.Content key={item.destId}>
-              <S.Twrp onClick={() => TravelDelete(item.destId)}>
-                <img src={trashcan} />
-              </S.Twrp>
+              {/* <S.Twrp> */}
+              <S.Twrp
+                src={trashcan}
+                onClick={() => TravelDelete(item.destId)}
+              />
+              {/* </S.Twrp> */}
               <S.FlagText onClick={() => goChat(item.destId, item?.country)}>
                 <S.Flag>{getFlagByCountry(item?.country)}</S.Flag>
 
@@ -173,7 +176,10 @@ const MainPage = () => {
         <S.CTitle>공유 여행 모아보기</S.CTitle>
         <S.Container>
           {data?.shared.map((item) => (
-            <S.Content onClick={() => goChat(item.destId)} key={item.destId}>
+            <S.Content
+              onClick={() => goChat(item.destId, item?.country)}
+              key={item.destId}
+            >
               <S.FlagText>
                 <S.Flag>{getFlagByCountry(item?.country)}</S.Flag>
                 <S.CountryWrapper>

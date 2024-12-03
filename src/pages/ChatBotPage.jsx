@@ -17,13 +17,14 @@ const ChatBotPage = () => {
   const [chatData, setChatData] = useState([]);
 
   const [question, setQuestion] = useState("");
+  // const [coun, setCoun] = useState(country);
 
   const navigate = useNavigate();
   const location = useLocation();
   const { country } = location.state || {};
 
-  const goCheckList = () => {
-    navigate(`/list/${id}`);
+  const goCheckList = (country) => {
+    navigate(`/list/${id}`, { state: { country } });
     setIsList(true);
     setIsChat(false);
   };
@@ -39,6 +40,7 @@ const ChatBotPage = () => {
 
   const onClickSend = async () => {
     console.log("버튼 클릭");
+    setLoading(true);
     await postChat();
     setQuestion("");
     getChat();
@@ -51,6 +53,7 @@ const ChatBotPage = () => {
       setChatData(res);
       if (res) {
         setIsContent(true);
+        setLoading(false);
       }
       console.log("채팅 데이터", res);
     } catch (err) {
@@ -69,7 +72,7 @@ const ChatBotPage = () => {
       <S.Container>
         <S.IndexContainer>
           <S.Index isChat={isChat}>챗봇</S.Index>
-          <S.IndexGray onClick={goCheckList} isList={isList}>
+          <S.IndexGray onClick={() => goCheckList(country)} isList={isList}>
             체크리스트
           </S.IndexGray>
         </S.IndexContainer>
@@ -78,7 +81,7 @@ const ChatBotPage = () => {
         {loading ? (
           <>
             <S.Wrapper>
-              <S.Comment>PDF를 분석하고 있습니다.</S.Comment>
+              <S.Comment>답변을 생성하고 있습니다.</S.Comment>
               <Flex align="center" gap="middle">
                 <Spin
                   indicator={
@@ -106,11 +109,11 @@ const ChatBotPage = () => {
                   chatData?.map((item) => (
                     <>
                       {item?.qna === "Q" ? (
-                        <S.MyWrp key={item.logId}>
+                        <S.MyWrp key={item?.logId}>
                           <S.MyTextbox>{item?.content}</S.MyTextbox>
                         </S.MyWrp>
                       ) : (
-                        <S.ChatWrp key={item.logId}>
+                        <S.ChatWrp key={item?.logId}>
                           <S.ChatTextbox>{item?.content}</S.ChatTextbox>
                         </S.ChatWrp>
                       )}

@@ -201,12 +201,12 @@ export const Trash = styled.img`
   justify-content: end;
 `;
 
-export const Twrp = styled.div`
+export const Twrp = styled.img`
   display: flex;
   flex-direction: row;
   justify-content: end;
   padding-left: 5px;
   padding-top: 5px;
-
+  z-index: 0;
   position: absolute;
 `;

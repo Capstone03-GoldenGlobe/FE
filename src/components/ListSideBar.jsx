@@ -15,7 +15,7 @@ import dots from "../assets/dots.svg";
 import { DeleteGroupApi } from "../api/deletGroup";
 import Button from "./Botton";
 
-const ListSideBar = ({ id, data, height }) => {
+const ListSideBar = ({ id, data, height, containerHeight }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [groupName, setGroupName] = useState("");
   const [isClicked, setIsClicked] = useState(false);
@@ -148,7 +148,7 @@ const ListSideBar = ({ id, data, height }) => {
     <>
       <Wrapper>
         <Title onClick={goMain}>GoldenGlobe</Title>
-        {/* <Country>🇫🇷 프랑스</Country> */}
+
         <UserWrp>
           {suser?.map((item) => (
             <Suser>
@@ -179,14 +179,10 @@ const ListSideBar = ({ id, data, height }) => {
             style={{ width: "2.8rem", cursor: "pointer" }}
             onClick={onClickPlus}
           /> */}
-          <Button
-            type={"S"}
-            color={"g"}
-            onClick={onClickPlus}
-            children={"공유하기"}
-          />
+          <Button type={"S"} onClick={onClickPlus} children={"공유하기"} />
         </UserWrp>
 
+        <IndexTemp height={containerHeight}>PDF기반 준비물 추천</IndexTemp>
         {/* 그룹 목록 렌더링 */}
         {(data?.length ? data : group)?.map((item, index) => (
           <GrpWrp heightProps={heiProps[index]}>
@@ -311,6 +307,24 @@ const Index = styled.div`
 
   box-sizing: border-box;
   position: fixed;
+`;
+
+const IndexTemp = styled.div`
+  color: #fff;
+  text-align: center;
+  font-family: var(--korean);
+  font-size: 1.4rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+
+  box-sizing: border-box;
+
+  /* margin-top: 2em;
+  margin-bottom: 2rem; */
+  height: ${(props) => props.height}px;
 `;
 
 const GrpInput = styled.input`

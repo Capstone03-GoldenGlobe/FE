@@ -4,9 +4,13 @@ import mypage from "../assets/mypage.svg";
 import logout from "../assets/logout.svg";
 import { useNavigate } from "react-router-dom";
 import { Logout } from "../api/logout";
+import { useState } from "react";
+import AddNewModal from "./AddNewModal";
+import AddNewTrip from "./AddNewTrip";
 
 const SideBar = ({ data }) => {
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onClickLogout = async () => {
     try {
@@ -16,6 +20,15 @@ const SideBar = ({ data }) => {
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    // 모달 닫힐때 다시 데이터 불러옴
+  };
+
+  const onClickAddNew = () => {
+    setIsModalOpen(true);
   };
 
   const goMain = () => {
@@ -45,12 +58,15 @@ const SideBar = ({ data }) => {
           />
           <Text>
             안녕하세요
-            <br /> {data}님!
+            <br /> {data} 님!
           </Text>
         </Profile>
         <Index onClick={goMain}>여행 모아보기</Index>
-        <Index onClick={goNew}>새로운 여행 추가</Index>
-
+        <Index onClick={onClickAddNew}>새로운 여행 추가</Index>
+        <AddNewModal isOpen={isModalOpen} onClose={closeModal}>
+          <AddNewTrip />
+        </AddNewModal>
+        <div style={{ height: "7rem" }} />
         <Line />
         <div>
           <Sub onClick={goMypage}>

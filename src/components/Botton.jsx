@@ -15,10 +15,15 @@ const Button = ({ type, children, color, onClick }) => {
 export default Button;
 
 const Btn = styled.button`
-  background-color: ${(props) => (props.color == "g" ? "#E1E1E1" : "#FFA500")};
+  background-color: ${(props) =>
+    props.color === "g"
+      ? "#E1E1E1"
+      : props.color === "o"
+      ? "#FFA500"
+      : "white"};
   width: ${(props) => (props.type == "L" ? "9.5rem" : "5.8rem")};
   height: ${(props) => (props.type == "L" ? "3.35rem" : "3.3rem")};
-  color: ${(props) => (props.color == "g" ? "black" : "white")};
+  color: ${(props) => (props.color == "o" ? "white" : "black")};
   font-size: 1.12rem;
   border-radius: 0.35rem;
   border: none;

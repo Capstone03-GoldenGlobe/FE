@@ -138,7 +138,7 @@ const ChatSideBar = ({ country }) => {
         {data?.map((item) => (
           <PdfBox>
             <img src={pdf} style={{ width: "2.2rem" }} />
-            <PdfName onClick={() => onClickPDF(item.pdfPath)}>
+            <PdfName onClick={() => onClickPDF(item?.pdfPath)}>
               {item?.pdfName.split(".").slice(0, -1).join(".")}
             </PdfName>
             <img src={trash} />

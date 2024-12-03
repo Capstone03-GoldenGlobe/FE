@@ -80,7 +80,12 @@ const AddNewTrip = ({ onClose }) => {
         </DateWrp>
 
         <BtnWrapper>
-          <Button children={"생성하기"} type="L" onClick={onClickAddTrip} />
+          <Button
+            children={"생성하기"}
+            type="L"
+            color={"o"}
+            onClick={onClickAddTrip}
+          />
         </BtnWrapper>
 
         <AlertModal
@@ -114,7 +119,7 @@ export const Wrapper = styled.div`
   justify-content: center;
   left: 16.15rem;
   height: 90vh;
-  z-index: 100;
+  z-index: 1000;
 `;
 export const ContentsWrapper = styled.div`
   flex: 1; /* 남은 공간을 채우도록 설정 */
