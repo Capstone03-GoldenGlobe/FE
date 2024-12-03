@@ -13,6 +13,7 @@ import { getCheckListAll } from "../api/checkList";
 import { sharedUser } from "../api/sharedUser";
 import dots from "../assets/dots.svg";
 import { DeleteGroupApi } from "../api/deletGroup";
+import Button from "./Botton";
 
 const ListSideBar = ({ id, data, height }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -173,10 +174,16 @@ const ListSideBar = ({ id, data, height }) => {
             src={profileGreen}
             style={{ width: "3rem", marginRight: "0.4rem" }}
           /> */}
-          <img
+          {/* <img
             src={plusUser}
             style={{ width: "2.8rem", cursor: "pointer" }}
             onClick={onClickPlus}
+          /> */}
+          <Button
+            type={"S"}
+            color={"g"}
+            onClick={onClickPlus}
+            children={"공유하기"}
           />
         </UserWrp>
 

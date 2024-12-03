@@ -66,7 +66,7 @@ const LoginPage = () => {
         <div style={{ marginTop: "2.45rem" }} />
         <S.Title>아이디</S.Title>
         <S.Input
-          placeholder="아이디를 입력해주세요"
+          placeholder="전화번호를 입력해주세요"
           type="email"
           onChange={onPhoneChange}
           value={cellphone}
@@ -84,16 +84,15 @@ const LoginPage = () => {
         </S.Btn>
 
         <S.OptionWrapper>
-          <S.Option onClick={goFindEmail}>아이디(이메일) 찾기 | </S.Option>
           <S.Option onClick={goFindPw}> 비밀번호 찾기 | </S.Option>
           <S.Option onClick={goSignup}>회원가입</S.Option>
         </S.OptionWrapper>
-
+        {/* 
         <S.ImgWrapper>
           <img src={kakao} style={{ width: "5.1rem", cursor: "pointer" }} />
           <div style={{ marginRight: "1.85rem" }}></div>
           <img src={google} style={{ width: "5.1rem", cursor: "pointer" }} />
-        </S.ImgWrapper>
+        </S.ImgWrapper> */}
       </S.Wrapper>
     </>
   );

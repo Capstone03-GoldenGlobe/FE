@@ -37,7 +37,7 @@ const SideBar = ({ data }) => {
   return (
     <>
       <Wrapper>
-        <Title>GoldenGlobe</Title>
+        <Title onClick={goMain}>GoldenGlobe</Title>
         <Profile>
           <img
             src={profile}
@@ -50,8 +50,7 @@ const SideBar = ({ data }) => {
         </Profile>
         <Index onClick={goMain}>여행 모아보기</Index>
         <Index onClick={goNew}>새로운 여행 추가</Index>
-        <Index onClick={goCheck}>준비물 확인하기</Index>
-        <Index onClick={goBot}>챗봇에게 질문하기</Index>
+
         <Line />
         <div>
           <Sub onClick={goMypage}>
@@ -100,7 +99,7 @@ const Title = styled.div`
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-
+  cursor: pointer;
   margin-top: 2.5rem;
 `;
 

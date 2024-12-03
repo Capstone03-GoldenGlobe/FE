@@ -20,6 +20,9 @@ const Signup1Page = () => {
     console.log(userData);
   };
 
+  const goLogin = () => {
+    navigate("/login");
+  };
   const userData = {
     name,
     birth,
@@ -79,7 +82,7 @@ const Signup1Page = () => {
             <InputBox
               type="text"
               width="22.25rem"
-              placeholder={"1960.01.01"}
+              placeholder={"1960-01-01"}
               value={birth}
               onChange={onChangeBirth}
             />
@@ -109,7 +112,7 @@ const Signup1Page = () => {
         </div>
 
         <S.BtnWrapper>
-          <Button type="L" color="g">
+          <Button type="L" color="g" onClick={goLogin}>
             이전
           </Button>
           <div style={{ marginRight: "2.2rem" }} />
