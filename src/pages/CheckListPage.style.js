@@ -75,7 +75,7 @@ export const Weather = styled.div`
   background-color: white;
   text-align: start;
   border-bottom: 1px solid #d3d3d3;
-  border-top: 1px solid #d3d3d3;
+  /* border-top: 1px solid #d3d3d3; */
 `;
 
 // export const ListBox = styled.div`
@@ -90,4 +90,28 @@ export const Weather = styled.div`
 
 export const Check = styled.input`
   background-color: red;
+`;
+
+export const Reco = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: auto;
+  box-sizing: border-box;
+  padding: 1.5rem 3rem;
+  color: #000;
+  text-align: center;
+  font-family: var(--korean);
+  font-size: 1.4rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  background-color: white;
+  text-align: start;
+  border-bottom: 1px solid #d3d3d3;
+`;
+export const PreItem = styled.div`
+  margin-right: 2rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 `;

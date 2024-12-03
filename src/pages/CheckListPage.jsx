@@ -1,10 +1,11 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ListSideBar from "../components/ListSideBar";
 import * as S from "./CheckListPage.style";
 import CheckIndexBox from "../components/CheckIndexBox";
 import { getCheckListAll } from "../api/checkList";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getWeather } from "../api/getWeather";
+import { getListRecommendation } from "../api/listRecom";
 
 const CheckListPage = () => {
   const navigate = useNavigate();
@@ -13,12 +14,24 @@ const CheckListPage = () => {
   const [groupHeight, setGroupHeight] = useState([]); // 공유 상태: 사이드바 높이
   const groupHeightsRef = useRef([]);
   const [temp, setTemp] = useState();
+  const [reco, setReco] = useState([]);
+  const containerRef = useRef(null); // 컨테이너 참조
+  const [containerHeight, setContainerHeight] = useState(0);
 
   const { id } = useParams();
 
-  const goChatBot = () => {
-    navigate(`/chat/${id}`);
+  const location = useLocation();
+  const { country } = location.state || {};
+
+  const goChatBot = (country) => {
+    navigate(`/chat/${id}`, { state: { country } });
   };
+  useEffect(() => {
+    if (containerRef.current) {
+      // 높이 계산
+      setContainerHeight(containerRef.current.offsetHeight);
+    }
+  }, [reco]); // 관련 데이터가 바뀌면 다시 계산
 
   useEffect(() => {
     const getData = async () => {
@@ -29,6 +42,7 @@ const CheckListPage = () => {
 
     getData();
     weatherApi();
+    getTemplate();
   }, [id]);
 
   console.log("res.data.groups", data);
@@ -66,19 +80,41 @@ const CheckListPage = () => {
     // });
   }, []);
 
+  // 준비물 템플릿
+  const getTemplate = async () => {
+    const res = await getListRecommendation(id);
+    setReco(res?.recommendations);
+
+    console.log("템플릿 받아오기 성공", res);
+  };
+
   return (
     <>
       <div>
-        <ListSideBar data={data ? data : null} id={id} height={groupHeight} />
+        <ListSideBar
+          data={data ? data : null}
+          id={id}
+          height={groupHeight}
+          containerHeight={containerHeight}
+        />
         <S.Container>
           <S.IndexContainer>
-            <S.IndexGray onClick={goChatBot}>챗봇</S.IndexGray>
+            <S.IndexGray onClick={() => goChatBot(country)}>챗봇</S.IndexGray>
             <S.Index>체크리스트</S.Index>
           </S.IndexContainer>
 
           <S.Weather>
-            {temp?.message}: {temp?.data}℃
+            {country}의 {temp?.message}: {temp?.data}℃
           </S.Weather>
+
+          <S.Reco ref={containerRef}>
+            {reco?.map((item) => (
+              <S.PreItem key={item.id}>
+                {item?.recommendation.split(":")[0]}
+              </S.PreItem>
+            ))}
+          </S.Reco>
+
           {data?.map((list, index) => (
             <CheckIndexBox
               key={list.groupId}
