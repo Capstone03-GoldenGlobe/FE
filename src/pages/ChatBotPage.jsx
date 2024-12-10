@@ -41,15 +41,19 @@ const ChatBotPage = () => {
   const onClickSend = async () => {
     console.log("버튼 클릭");
     setLoading(true);
+
     await postChat();
     setQuestion("");
-    getChat();
+    await getChat();
+    setIsContent(true);
   };
 
   // 챗봇 로그 불러오기
   const getChat = async () => {
     try {
+      console.log(id);
       const res = await getChatlog(id);
+
       setChatData(res);
       if (res) {
         setIsContent(true);
@@ -63,7 +67,7 @@ const ChatBotPage = () => {
 
   // 페이지 마운트시 챗봇 로그 불러오기
   useEffect(() => {
-    getChat(id);
+    getChat();
   }, []);
 
   return (

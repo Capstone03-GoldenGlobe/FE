@@ -12,14 +12,26 @@ import AlertModal from "../components/AlertModal";
 const Signup3Page = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const [isModalOpen3, setIsModalOpen3] = useState(false);
+  const [errorMessage, setErrorMessage] = useState();
 
   const goNext = async () => {
     try {
       await Signup();
-      console.log("회원가입 성공");
-      setIsModalOpen(true);
     } catch (err) {
-      console.log(err);
+      console.log("에러 발생: ", err); // 에러 전체 출력
+      console.log("JSON 변환: ", err.toJSON?.());
+
+      // 에러 메시지를 안전하게 추출
+      const serverMessage = err?.response?.data
+        ? err.response.data // 서버에서 받은 메시지
+        : err?.message // 기본 Axios 에러 메시지
+        ? err.message
+        : "알 수 없는 에러가 발생했습니다."; // 기본 메시지
+
+      setErrorMessage(serverMessage); // 에러 메시지를 상태로 저장
+      setIsModalOpen2(true);
     }
   };
 
@@ -29,7 +41,7 @@ const Signup3Page = () => {
   const [conpw, setConpw] = useState("");
 
   const savedUserData = JSON.parse(localStorage.getItem("userData"));
-  console.log(savedUserData);
+  // console.log(savedUserData);
 
   const goBack = () => {
     navigate(-1);
@@ -69,6 +81,13 @@ const Signup3Page = () => {
     );
 
     console.log("회원가입 res", res);
+    if (res?.status == 201) {
+      setIsModalOpen(true);
+    } else {
+      setErrorMessage(res);
+      setIsModalOpen2(true);
+    }
+
     localStorage.removeItem("userData");
   };
 
@@ -79,7 +98,7 @@ const Signup3Page = () => {
         <SignupProgress step={2} />
         <div style={{ height: "3.8rem" }} />
         <div>
-          <S.InputWrp2>
+          <S.InputWrp1>
             <S.Title>닉네임</S.Title>
             <div style={{ marginRight: "2rem" }} />
             <InputBox
@@ -89,35 +108,7 @@ const Signup3Page = () => {
               value={nickname}
               onChange={onChangeNickname}
             />
-            <Button type="S" color="o">
-              중복 확인
-            </Button>
-          </S.InputWrp2>
-
-          {/* 이메일 추가 */}
-          {/* <S.InputWrp1>
-            <S.Title>이메일</S.Title>
-            <InputBox
-              type="email"
-              width="22.25rem"
-              placeholder={"aaa@naver.com"}
-              value={email}
-              onChange={onChangeEmail}
-            />
-          </S.InputWrp1> */}
-          {/* /////// */}
-
-          {/* <S.InputWrp>
-            <S.Title>아이디</S.Title>
-            <div style={{ marginRight: "2rem" }} />
-            <InputBox
-              readOnly={true}
-              type="text"
-              width="22.25rem"
-              value={"slkdjf"}
-            />
-            <img src={info} />
-          </S.InputWrp> */}
+          </S.InputWrp1>
 
           <S.InputWrp1>
             <S.Title>비밀번호</S.Title>
@@ -157,6 +148,42 @@ const Signup3Page = () => {
           }}
           onCancel={() => {
             setIsModalOpen(false);
+          }}
+          isSingleButton={true}
+          showTextInput={false}
+        />
+
+        <AlertModal
+          isOpen={isModalOpen2}
+          onClose={() => {
+            setIsModalOpen2(false);
+          }}
+          guideText={errorMessage}
+          confirmText="확인"
+          onConfirm={() => {
+            setIsModalOpen2(false);
+            navigate("/signup3");
+          }}
+          onCancel={() => {
+            setIsModalOpen2(false);
+          }}
+          isSingleButton={true}
+          showTextInput={false}
+        />
+
+        <AlertModal
+          isOpen={isModalOpen3}
+          onClose={() => {
+            setIsModalOpen3(false);
+          }}
+          guideText="이미 가입된 전화번호입니다."
+          confirmText="확인"
+          onConfirm={() => {
+            setIsModalOpen3(false);
+            navigate("/signup3");
+          }}
+          onCancel={() => {
+            setIsModalOpen3(false);
           }}
           isSingleButton={true}
           showTextInput={false}

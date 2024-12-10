@@ -293,7 +293,7 @@ const UserWrp = styled.div`
   flex-direction: row;
   justify-content: space-around;
   margin-top: 1rem;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 
 const Index = styled.div`
