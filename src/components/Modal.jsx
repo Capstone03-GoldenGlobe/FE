@@ -31,6 +31,7 @@ const Modal = ({
       const res = await Share(cellPhone, color[2], id);
       console.log(res);
       console.log(id);
+      setCellphone("");
       onClose();
     } catch (err) {
       console.log(err);
@@ -57,7 +58,7 @@ const Modal = ({
           )}
 
           <ButtonContainer isSingleButton={isSingleButton}>
-            <Button type={"L"} onClick={shareFamily}>
+            <Button type={"L"} color={"o"} onClick={shareFamily}>
               {confirmText}
             </Button>
           </ButtonContainer>

@@ -2,10 +2,16 @@ import client from "./client";
 
 export const Signin = async (cellphone, password) => {
   try {
-    const res = await client.post("/auth/signin", {
-      cellphone: String(cellphone),
-      password: String(password),
-    });
+    const res = await client.post(
+      "/auth/signin",
+      {
+        cellphone: String(cellphone),
+        password: String(password),
+      },
+      {
+        headers: { "Cache-Control": "no-cache" },
+      }
+    );
 
     console.log(res);
 

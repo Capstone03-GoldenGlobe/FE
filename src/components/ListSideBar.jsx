@@ -60,18 +60,18 @@ const ListSideBar = ({ id, data, height, containerHeight }) => {
   }, [height]);
 
   useEffect(() => {
-    const fetchSharedUser = async () => {
-      try {
-        const res = await sharedUser(id);
-        console.log("공유 사용자", res); // 데이터를 제대로 받아오는지 확인
-        setSuser(res.data);
-      } catch (error) {
-        console.error("Error fetching shared users:", error);
-      }
-    };
-
     fetchSharedUser();
-  }, []);
+  }, [suser]);
+
+  const fetchSharedUser = async () => {
+    try {
+      const res = await sharedUser(id);
+      console.log("공유 사용자", res); // 데이터를 제대로 받아오는지 확인
+      setSuser(res?.data);
+    } catch (error) {
+      console.error("Error fetching shared users:", error);
+    }
+  };
 
   // 항목 추가 눌렀을 때
   const addGroup = () => {
@@ -232,7 +232,10 @@ const ListSideBar = ({ id, data, height, containerHeight }) => {
         guideText={"가족을 추가해주세요!"}
         confirmText="추가하기"
         cancelText="취소"
-        onConfirm={() => setIsModalOpen(false)}
+        onConfirm={async () => {
+          setIsModalOpen(false); // 모달 닫기
+          await fetchSharedUser(); // 공유된 사용자 목록 다시 가져오기
+        }}
         onCancel={() => setIsModalOpen(false)}
         isSingleButton={true}
         showTextInput={true}
@@ -375,7 +378,7 @@ const GrpWrp = styled.div`
 `;
 
 export const DotBox = styled.div`
-  border-radius: 12px 12px 0 0;
+  border-radius: 12px 12px 12px 12px;
   background: var(--White, #fff);
   /* background-color: green; */
   color: var(--Black, #000);
