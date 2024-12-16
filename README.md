@@ -1,70 +1,122 @@
-# Getting Started with Create React App
+# GoldenGlobe
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 프로젝트 개요
 
-## Available Scripts
+이 프로젝트는 시니어와 그 가족들이 효율적으로 여행을 준비할 수 있도록 돕는 LLM과 RAG 기반의 맞춤형 여행 챗봇 및 체크리스트 서비스입니다.
+시니어가 여행지 정보를 쉽게 파악하고 준비할 수 있도록 돕는 챗봇 기능과, 여행지에 맞춘 공유 체크리스트 기능을 통해 여행 준비의 효율성을 높입니다.
 
-In the project directory, you can run:
+### 주요 기능
 
-### `npm start`
+1. 챗봇
+   - 유저가 여행 pdf를 입력합니다.
+   - 유저를 통해 챗봇 질문을 입력받고 챗봇 api를 통해 답변을 보여줍니다.
+2. 체크리스트
+   - pdf기반 준비물을 보여줍니다.
+   - 준비물 그룹과 아이템을 적고 체크합니다.
+   - 메모를 통해 가족과 간단히 소통할 수 있습니다.
+   - 가족과 체크리스트를 공유할 수 있습니다.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 사용 기술
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+![Postman](https://img.shields.io/badge/Postman-FF6C37?style=flat-square&logo=postman&logoColor=white)
+![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white)
+![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=flat-square&logo=swagger&logoColor=white)
+![React](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=white)
+![styled-components](https://img.shields.io/badge/styled--components-DB7093?style=flat-square&logo=styled-components&logoColor=white)
+![Axios](https://img.shields.io/badge/Axios-5A29E4?style=flat-square&logo=axios&logoColor=white)
+![Ant Design](https://img.shields.io/badge/Ant%20Design-0170FE?style=flat-square&logo=ant-design&logoColor=white)
+![React Router](https://img.shields.io/badge/React%20Router-CA4245?style=flat-square&logo=react-router&logoColor=white)
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### How to Build
 
-### `npm run build`
+1. Repository 클론
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+`https://github.com/Capstone03-GoldenGlobe/FE.git`
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+ <br>
+ 2. npm i 
+ 
+ ```
+npm install
+ ```
+- git clone을 하면 npm 패키지가 없기 때문에 설치가 필요합니다. 
+- npm이 있는 폴더에서 npm i 를 진행해야합니다.
+- 설치가 완료되면 package-lock.json 과  package.json 파일이 생성됩니다.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+ <br>
+3. 빌드
 
-### `npm run eject`
+```
+npm start
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+터미널에서 npm start를 실행하면 웹 페이지를 빌드할 수 있습니다. <br>
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### How to Install
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. 프로젝트 생성
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```
+npx create-react-app golden-globe
+cd golden-globe
+```
 
-## Learn More
+2. 라이브러리 설치
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+npm install styled-components
+npm install axios
+npm install antd
+npm install react-router-dom
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### How to Test<br>
 
-### Code Splitting
+유저의 flow대로 실제 서비스를 사용하며 테스트합니다.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## 🌱 담당 기능
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+|                 🍀 이름                  | 🍀 담당 기능                                                                                                                                                                                                                                                           |
+| :--------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [김현수](https://github.com/SSSSSSu3834) | - **로그인/회원가입 페이지 개발**<br>- **메인페이지 개발**<br>- **마이페이지 개발**<br>- **챗봇 페이지 개발**<br>- **체크리스트 페이지 개발**<br>- **공용 컴포넌트 제작**: 모달, 체크박스, 버튼, Input Box 등<br>- **API 연결**: 클라이언트와 서버 간 데이터 통신 구현 |
 
-### Making a Progressive Web App
+## 🗂️ 폴더 구조
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```
+📂 goldenglob/
+│
+├─ 📂 node_modules  ▶️ Node.js dependencies
+│
+├─ 📂 public  ▶️ Public files
+│
+├─ 📂 src  ▶️ Source files
+│   ├─ 📂 api  ▶️ API 파일 모음
+│   ├─ 📂 assets  ▶️ Assets (이미지)
+│   ├─ 📂 components  ▶️ Reusable React components
+│   ├─ 📂 pages  ▶️ React pages (routes)
+│   ├─ 📂 style  ▶️ Global styles
+│   ├─ 📂 app.js  ▶️ 페이지 라우팅
+│   ├─ 📂 index.js
+│
+└─ 📂 package.json  ▶️ Project dependencies and scripts
 
-### Advanced Configuration
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+<br>
 
-### Deployment
+## 📚 오픈소스
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Frontend Libraries & Tools
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. **React**: [React Official Site](https://reactjs.org/)
+2. **Ant Design**: [Ant Design Official Site](https://ant.design/)
+3. **React Router**: [React Router Official Site](https://reactrouter.com/)
+4. **Axios**: [Axios Official Site](https://axios-http.com/)
+5. **Styled Components**: [Styled Components Official Site](https://styled-components.com/)
+6. **Prettier**: [Prettier Official Site](https://prettier.io/)
