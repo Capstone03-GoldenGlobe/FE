@@ -4,11 +4,15 @@ import profile from "../assets/profile.svg";
 import Button from "../components/Botton";
 import { useEffect, useState } from "react";
 import { getMypage } from "../api/mypage";
+import { editMypageApi } from "../api/editMypage";
 
 const Mypage = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [data, setData] = useState();
   const [name, setName] = useState();
+  const [nickname, setNickname] = useState("");
+  const [birth, setBirth] = useState("");
+  const [cellphone, setCellphone] = useState("");
 
   const onClickIsEdit = () => {
     setIsEdit(true);
@@ -16,10 +20,43 @@ const Mypage = () => {
 
   const onClickSave = () => {
     setIsEdit(false);
+    EditMypage();
   };
+
   useEffect(() => {
     mypageApi();
   }, []);
+
+  // 마이페이지 수정 api
+  const EditMypage = async () => {
+    const updatedData = {
+      name: name || data?.name, // 수정하지 않았으면 기존 값 사용
+      nickname: nickname || data?.nickname,
+      cellphone: cellphone || data?.cellphone,
+      birth: birth || data?.birth,
+    };
+
+    try {
+      const res = await editMypageApi(
+        updatedData.name,
+        updatedData.nickname,
+        updatedData.cellphone,
+        updatedData.birth
+      );
+
+      console.log("마이페이지 수정", res);
+
+      if (res.status === 200) {
+        // 수정 성공 시 최신 데이터 불러오기
+        await mypageApi();
+        setIsEdit(false); // 수정 모드 종료
+      } else {
+        console.error("마이페이지 수정 실패:", res);
+      }
+    } catch (error) {
+      console.error("마이페이지 수정 중 에러:", error);
+    }
+  };
 
   // mypage api
   const mypageApi = async () => {
@@ -29,6 +66,9 @@ const Mypage = () => {
 
     setData(res);
     setName(res?.name);
+    setNickname(res?.nickname ?? "");
+    setCellphone(res?.cellphone ?? "");
+    setBirth(res?.birth ?? "");
   };
   return (
     <>
@@ -51,7 +91,10 @@ const Mypage = () => {
             <S.UserTitle>닉네임</S.UserTitle>
             {isEdit ? (
               <>
-                <S.UserInfoInput placeholder={data?.nickname} />
+                <S.UserInfoInput
+                  value={nickname}
+                  onChange={(e) => setNickname(e.target.value)}
+                />
               </>
             ) : (
               <S.UserInfo>{data?.nickname}</S.UserInfo>
@@ -69,7 +112,10 @@ const Mypage = () => {
             <S.UserTitle1>생년월일</S.UserTitle1>
             {isEdit ? (
               <>
-                <S.UserInfoInput placeholder={data?.birth} />
+                <S.UserInfoInput
+                  value={birth}
+                  onChange={(e) => setBirth(e.target.value)}
+                />
               </>
             ) : (
               <S.UserInfo>{data?.birth}</S.UserInfo>
@@ -103,11 +149,11 @@ const Mypage = () => {
         <div style={{ height: "3rem" }} />
 
         {isEdit ? (
-          <Button type={"L"} onClick={onClickSave}>
+          <Button type={"L"} color={"o"} onClick={onClickSave}>
             저장하기
           </Button>
         ) : (
-          <Button type={"L"} onClick={onClickIsEdit}>
+          <Button type={"L"} color={"o"} onClick={onClickIsEdit}>
             수정하기
           </Button>
         )}
