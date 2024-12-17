@@ -29,6 +29,19 @@
 
 ---
 
+## 시작하기
+
+### 사전준비
+프론트를 실행하기 전에 서버 실행이 선행되어야 합니다. <br>
+서버 실행관련한 깃헙 레포를 첨부합니다.
+- 백앤드
+```
+https://github.com/Capstone03-GoldenGlobe/BE.git
+```
+- AI
+```
+https://github.com/Capstone03-GoldenGlobe/AI.git
+```
 ### How to Build
 
 1. Repository 클론
